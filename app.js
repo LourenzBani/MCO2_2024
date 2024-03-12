@@ -15,19 +15,40 @@ server.engine('hbs', handlebars.engine({
 server.use(express.static('public'));
 
 
-
+// Login Page
 server.get('/', function(req, resp){
     resp.render('login',{
         layout: 'index' 
     });
 });
 
+// Main page (student view)
 server.get('/main', function(req, resp){
     resp.render('mainpage',{
         layout: 'main' 
     });
 });
 
+// tech page (admin view)
+server.get('/admin', function(req, resp){
+    resp.render('techpage',{
+        layout: 'main' 
+    });
+});
+
+// profile page 
+server.get('/profile', function(req, resp){
+    resp.render('profilepage',{
+        layout: 'profile' 
+    });
+});
+
+// profile page 
+server.get('/profile_edit', function(req, resp){
+    resp.render('profile_edit',{
+        layout: 'profile' 
+    });
+});
 
 
 const port = process.env.PORT | 3000;

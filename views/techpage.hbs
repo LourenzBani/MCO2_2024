@@ -1,14 +1,14 @@
 <div class="container">
         <div class="sidebar-menu">
             <div class="profile-settings">
-                <a href='/profile' id="sidebar-text">
+                <a href="/profile" id="sidebar-text">
                 <div class="icon-name-style sidebar-opts opts-profile" id="profile">
                     <div id="img">
                         <img id="avatar" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png">
                     </div>
                     <div class="icon-padding profile-desc"> 
-                        <div id="account-name">Lourenz J.</div>
-                        <div id="account-type">Student Account</div>
+                        <div id="account-name">Felix M.</div>
+                        <div id="account-type">Technician</div>
                     </div>
                     
                     
@@ -18,12 +18,6 @@
                 <a href="settings.html" id="sidebar-text">
                 <div class="icon-name-style sidebar-opts" id="settings">
                     <i class="fa-solid fa-gear"></i> <div class="icon-padding">Settings</div>
-                </div>
-                </a>
-
-                <a href="help.html" id="sidebar-text">
-                <div class="icon-name-style sidebar-opts" id="help">
-                    <i class="fa-solid fa-question"></i> <div class="icon-padding">Ask help</div>
                 </div>
                 </a>
 
@@ -81,13 +75,13 @@
                 <div class="dropdown" id="myDropdown">
                     <button class="button dropbtn"><i class="fa-solid fa-computer"></i> Go to Lab</button>
                     <div class="dropdown-content">
-                        <a href="mainpage.html">
+                        <a href="techview.html">
                             <p>Lab #1</p>
                         </a>
-                        <a href="lab2.html">
+                        <a href="techview2.html">
                             <p>Lab #2</p>
                         </a>
-                        <a href="lab3.html">
+                        <a href="techview3.html">
                             <p>Lab #3</p>
                         </a>
                     </div>
@@ -159,7 +153,7 @@
                 <div class="seats">
                     <div class="table-container">
                         <div class="row">
-                            <div class="colheader colspan-100"><b><h2>Seats</h2></b></div>
+                            <div class="colheader colspan-100"><b>Seats</b></div>
                         </div>
                         <div class="row">
                             <div class="col-sec">Sec A</div>
@@ -212,76 +206,61 @@
                     </div>
                 </div>
             </div>
-
-            <div class="main-footer">
-                <div class="left-guidelines">
-                    <h2>Guidelines</h2><br>
-                    <p>1. The computer labs are available for all students of the University
-                        <br><br>2. Reservations can be made one day before the intended date of use through the online booking system.
-                        <br><br>3. Use of the rooms is on a first come first served basis, but prior reservations can be made for guaranteed availability.
-
-                    </p>
+            <div class="main-footer scroll">
+                
+                <div class="reserve-card">
+                    <h3 id="card-title"><u>Reservation Details</u></h3>
+                    <div class="card-info">
+                        <div class="info-name">Reservation No.:</div> 
+                        <div class="info-deet">1</div> 
+                    </div>
+                    <div class="card-info">
+                        <div class="info-name">Name:</div> 
+                        <div class="info-deet">Lourenz J.</div> 
+                    </div>
+                    <div class="card-info">
+                        <div class="info-name">Time:</div> 
+                        <div class="info-deet">9:30 - 10:00 AM</div> 
+                    </div>
+                    <div class="card-info">
+                        <div class="info-name">Seat No.:</div> 
+                        <div class="info-deet">A2</div> 
+                    </div>
+                    <div class="card-info">
+                        <div class="info-name">Reason:</div> 
+                        <div class="info-deet">Online class</div> 
+                    </div>
+                    <div class="card-buttons">
+                        <button class="card-btn edit"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+                        <button class="card-btn cancel"><i class="fa-solid fa-xmark"></i> Cancel</button>
+                    </div>
                 </div>
-                <div class="form-container">
-                    <form id="reservation-form">
-                        <label for="name">Name:</label>
-                        <input type="text" id="name" name="name" required>
-            
-                        <label for="section">Section:</label>
-                        <input type="text" id="section" name="section" required>
-            
-                        <label for="reason">Reason for Reservation:</label>
-                        <input type="text" id="reason" name="reason" required>
-            
-                        <label for="seat">Select a Seat:</label>
-                        <select id="seat" name="seat" required>
-                            <option value="">Select a Seat</option>
-                            <optgroup label="Rows A-C">
-                                <option value="A1">A1</option>
-                                <option value="A2">A2</option>
-                                <option value="A3">A3</option>
-                                <option value="B1">B1</option>
-                                <option value="B2">B2</option>
-                                <option value="B3">B3</option>
-                                <option value="C1">C1</option>
-                                <option value="C2">C2</option>
-                                <option value="C3">C3</option>
-                            </optgroup>
-                            <optgroup label="Rows D-F">
-                                <option value="D1">D1</option>
-                                <option value="D2">D2</option>
-                                <option value="D3">D3</option>
-                                <option value="E1">E1</option>
-                                <option value="E2">E2</option>
-                                <option value="E3">E3</option>
-                                <option value="F1">F1</option>
-                                <option value="F2">F2</option>
-                                <option value="F3">F3</option>
-                            </optgroup>
-                            <optgroup label="Rows G-I">
-                                <option value="G1">G1</option>
-                                <option value="G2">G2</option>
-                                <option value="G3">G3</option>
-                                <option value="H1">H1</option>
-                                <option value="H2">H2</option>
-                                <option value="H3">H3</option>
-                                <option value="I1">I1</option>
-                                <option value="I2">I2</option>
-                                <option value="I3">I3</option>
-                            </optgroup>
-                        </select>
-            
-                        <button type="submit" class="button">Reserve</button>
-                    </form>
-                </div>
-                <div class="right-guidelines">
-                    <h2>Prohibited Activities</h2><br>
-                    <p>1. Eating
-                        <br><br>2. Playing cards/board games/musical instruments
-                        <br><br>3. Gambling
-                        <br><br>4. Leaving personal belongings unattended
-                        <br><br>5. Bringing in of additional chairs and other pieces of furniture 
-                    </p>
+                <div class="reserve-card">
+                    <h3 id="card-title"><u>Reservation Details</u></h3>
+                    <div class="card-info">
+                        <div class="info-name">Reservation No.:</div> 
+                        <div class="info-deet">2</div> 
+                    </div>
+                    <div class="card-info">
+                        <div class="info-name">Name:</div> 
+                        <div class="info-deet">Humphrey P</div> 
+                    </div>
+                    <div class="card-info">
+                        <div class="info-name">Time:</div> 
+                        <div class="info-deet">11:30 - 12:00 NN</div> 
+                    </div>
+                    <div class="card-info">
+                        <div class="info-name">Seat No.:</div> 
+                        <div class="info-deet">D2</div> 
+                    </div>
+                    <div class="card-info">
+                        <div class="info-name">Reason:</div> 
+                        <div class="info-deet">Web browsing</div> 
+                    </div>
+                    <div class="card-buttons">
+                        <button class="card-btn edit"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+                        <button class="card-btn cancel"><i class="fa-solid fa-xmark"></i> Cancel</button>
+                    </div>
                 </div>
             </div>
         </div>
