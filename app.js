@@ -1,6 +1,6 @@
 const express = require('express');
 const server = express();
-const port = 3000;
+
 
 const bodyParser = require('body-parser');
 server.use(express.json()); 
@@ -17,12 +17,12 @@ server.use(express.static('public'));
 
 
 server.get('/', function(req, resp){
-    resp.render('main',{
+    resp.render('login',{
         layout: 'index' 
     });
 });
 
-server.listen(port, () => {
-    console.log(`App is listening to port ${port}`)
+const port = process.env.PORT | 3000;
+server.listen(port, function(){
+    console.log('Listening at port '+port);
 });
-
