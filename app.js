@@ -22,6 +22,14 @@ server.get('/', function(req, resp){
     });
 });
 
+server.get('/main', function(req, resp){
+    resp.render('mainpage',{
+        layout: 'main' 
+    });
+});
+
+
+
 const port = process.env.PORT | 3000;
 server.listen(port, function(){
     console.log('Listening at port '+port);
