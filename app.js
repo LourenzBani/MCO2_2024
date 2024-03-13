@@ -1,4 +1,6 @@
 const express = require('express');
+const session = require('express-session');
+const crypto = require('crypto');
 const server = express();
 
 
@@ -11,6 +13,9 @@ server.set('view engine', 'hbs');
 server.engine('hbs', handlebars.engine({
     extname: 'hbs',
 }));
+
+
+
 
 server.use(express.static('public'));
 
@@ -43,11 +48,25 @@ const signupSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    acctype: {
+        type: String,
+        required: true
     }
 });
 
 // collection model for users
 const collection_user = mongoose.model("users", signupSchema);
+
+// configure session 
+const secretKey = crypto.randomBytes(64).toString('hex');
+server.use(session({
+    secret: secretKey,
+    resave: false,
+    saveUninitialized: true
+}));
+
+server.use(bodyParser.urlencoded({ extended: true }));
 
 server.post("/", async (req, res) => {
     const action = req.body.action;
@@ -57,7 +76,8 @@ server.post("/", async (req, res) => {
         const data = {
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password
+            password: req.body.password,
+            acctype: req.body.acctype
         };
 
         const existUser = await collection_user.findOne({email: data.email});
@@ -84,9 +104,18 @@ server.post("/", async (req, res) => {
             if (user.password !== req.body.password) {
                 return res.status(401).send("Incorrect password");
             }
+
+            // Store user information in the session
+            req.session.user = user;
         
             // Authentication successful
-            res.redirect('/main');
+            if(user.acctype === 'student'){
+                res.redirect('/main');
+            }
+            else if (user.acctype === 'admin'){
+                res.redirect('/admin');
+            }
+            
         } catch (error) {
             console.error(error);
             return res.status(500).send("Internal server error");
@@ -105,15 +134,28 @@ server.get('/', function(req, resp){
 
 // Main page (student view)
 server.get('/main', function(req, resp){
+
+    const user = req.session.user;
+    if (!user) {
+        return resp.status(401).send("Unauthorized");
+    }
     resp.render('mainpage',{
-        layout: 'main' 
+        layout: 'main',
+        user: user
     });
 });
 
 // tech page (admin view)
 server.get('/admin', function(req, resp){
+
+    const user = req.session.user;
+    if (!user) {
+        return resp.status(401).send("Unauthorized");
+    }
+
     resp.render('techpage',{
-        layout: 'main' 
+        layout: 'main',
+        user: user
     });
 });
 
