@@ -49,26 +49,20 @@
                         <h1>Wednesday, Feb 14, 2024</h1>
                     </div>
                     <div>
-                        <h2>Current Lab: Lab #1</h2>
+                        <h2 id="current-lab">Current Lab: Lab #1</h2>
                     </div>
                 </div>
 
                 <div class="current-info-availability">
                     <div class="availability" id="avail">
                         <div class="icon-name-style status-icons" id="number">
-                            <img id="green-dot" src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Basic_green_dot.png"> <div class="icon-padding">22</div>
+                            <img id="green-dot" src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Basic_green_dot.png"> <div class="icon-padding">27</div>
                         </div>
                         Vacant
                     </div>
-                    <div class="availability mid-avail" id="inuse">
-                        <div class="icon-name-style status-icons" id="number">
-                            <img id="orange-dot" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Location_dot_orange.svg/1024px-Location_dot_orange.svg.png"> <div class="icon-padding">3</div>
-                        </div>
-                        In-use
-                    </div>
                     <div class="availability" id="reserved">
                         <div class="icon-name-style status-icons" id="number">
-                            <img id="red-dot" src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Basic_red_dot.png"> <div class="icon-padding">2</div>
+                            <img id="red-dot" src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Basic_red_dot.png"> <div class="icon-padding">0</div>
                         </div>
                         Reserved
                     </div>
@@ -81,15 +75,22 @@
                 <div class="dropdown" id="myDropdown">
                     <button class="button dropbtn"><i class="fa-solid fa-computer"></i> Go to Lab</button>
                     <div class="dropdown-content">
-                        <a href="mainpage.html">
+                        <a href="#" onclick="changeLab('Lab #1')">
                             <p>Lab #1</p>
                         </a>
-                        <a href="lab2.html">
+                        <a href="#" onclick="changeLab('Lab #2')">
                             <p>Lab #2</p>
                         </a>
-                        <a href="lab3.html">
+                        <a href="#" onclick="changeLab('Lab #3')">
                             <p>Lab #3</p>
                         </a>
+                        <a href="#" onclick="changeLab('Lab #4')">
+                            <p>Lab #4</p>
+                        </a>
+                        <a href="#" onclick="changeLab('Lab #5')">
+                            <p>Lab #5</p>
+                        </a>
+                        
                     </div>
                 </div>
     
@@ -168,11 +169,11 @@
                         </div>
                         <div class="row">
                             <div class="col">A1</div>
-                            <div class="col" id="col-reserved">A2</div>
+                            <div class="col">A2</div>
                             <div class="col">A3</div>
                             <div class="col">B1</div>
                             <div class="col">B2</div>
-                            <div class="col" id="col-inuse">B3</div>
+                            <div class="col">B3</div>
                             <div class="col">C1</div>
                             <div class="col">C2</div>
                             <div class="col">C3</div>
@@ -184,11 +185,11 @@
                         </div>
                         <div class="row">
                             <div class="col">D1</div>
-                            <div class="col" id="col-reserved">D2</div>
+                            <div class="col">D2</div>
                             <div class="col">D3</div>
-                            <div class="col" id="col-inuse">E1</div>
+                            <div class="col">E1</div>
                             <div class="col">E2</div>
-                            <div class="col" id="col-inuse">E3</div>
+                            <div class="col">E3</div>
                             <div class="col">F1</div>
                             <div class="col">F2</div>
                             <div class="col">F3</div>
@@ -292,6 +293,8 @@
         </div>
     </div>
 
+
+    <script src="./mainscript.js"></script>
     <script>
 
         let dropdown = document.getElementById('myDropdown');
