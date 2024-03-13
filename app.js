@@ -1,6 +1,5 @@
 const express = require('express');
 const server = express();
-const bcrypt = require("bcrypt");
 
 
 const bodyParser = require('body-parser');
@@ -47,7 +46,7 @@ const signupSchema = new mongoose.Schema({
     }
 });
 
-// collection model
+// collection model for users
 const collection_user = mongoose.model("users", signupSchema);
 
 server.post("/", async (req, res) => {
