@@ -1,63 +1,61 @@
 <div class="container" id="container">
-        <div class="form-container sign-up">
-            <form>
-                <img src="/common/images/dlsu-logo.png" id="dlsu-logo">
-                <h1>Create Account</h1>
-                <div class="social-icons">
-                    <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-x-twitter"></i></a>
-                </div>
-                <span>Enter DLSU Email and password for registeration</span>
-                <input type="text" placeholder="Name">
-                <input type="email" placeholder="Email">
-                <input type="password" placeholder="Password">
-                <div class="checkbox">
-                    <input type="checkbox" id="remember"><a id="remember-text">Sign-up as Technician</a>
-                </div>
-                <button>Sign Up</button>
-            </form>
-        </div>
-        <div class="form-container sign-in">
-            <form>
-                <img src="/common/images/dlsu-logo.png" id="dlsu-logo">
-                <h1>Sign In</h1>
-                <div class="social-icons">
-                    <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-x-twitter"></i></a>
-                </div>
-                <span>Enter DLSU Email and password</span>
-                <input type="email" placeholder="Email">
-                <input type="password" placeholder="Password">
-                <a href="#">Forget Your Password?</a>
-                <div class="checkbox">
-                    <input type="checkbox" id="remember"><a id="remember-text">Remember log-in</a>
-                </div>
-                <a href='/main'><button type="button">Sign In as Student</button></a>
-                <a href="/admin"><button type="button">Sign In as Technician</button></a>
-            </form>
-        </div>
-
-
-        <div class="toggle-container">
-            <div class="toggle">
-                <div class="toggle-panel toggle-left">
-                    
-                    <h1>Start Reserving!</h1>
-                    <p>Login to start reserving seats in the Computer Lab</p>
-                    <button class="hidden" id="login">Sign In</button>
-                </div>
-                <div class="toggle-panel toggle-right">
-                    <h1>Hello, Lasallian!</h1>
-                    <p>Register here with your personal details to use the Reservation website</p>
-                    <button class="hidden" id="register">Sign Up</button>
-                </div>
+    <div class="form-container sign-up">
+        <form action="/" method="post">
+            <img src="/common/images/dlsu-logo.png" id="dlsu-logo">
+            <h1>Create Account</h1>
+            <div class="social-icons">
+                <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
+                <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
+                <a href="#" class="icon"><i class="fa-brands fa-x-twitter"></i></a>
             </div>
-        </div>
+            <span>Enter DLSU Email and password for registration</span>
+            <input type="text" name="name" placeholder="Name">
+            <input type="email" name="email" placeholder="Email">
+            <input type="password" name="password" placeholder="Password">
+            <input type="hidden" name="action" value="signup">
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+    <div class="form-container sign-in">
+        <form action="/" method="post">
+            <img src="/common/images/dlsu-logo.png" id="dlsu-logo">
+            <h1>Sign In</h1>
+            <div class="social-icons">
+                <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
+                <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
+                <a href="#" class="icon"><i class="fa-brands fa-x-twitter"></i></a>
+            </div>
+            <span>Enter DLSU Email and password</span>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="hidden" name="action" value="login">
+            <a href="#">Forget Your Password?</a>
+            <div class="checkbox">
+                <input type="checkbox" id="remember"><a id="remember-text">Remember log-in</a>
+            </div>
+           <button type="submit">Sign In as Student</button>
+        </form>
     </div>
 
 
-    <script src="/common/script.js"></script>
+    <div class="toggle-container">
+        <div class="toggle">
+            <div class="toggle-panel toggle-left">
+                
+                <h1>Start Reserving!</h1>
+                <p>Login to start reserving seats in the Computer Lab</p>
+                <button class="hidden" id="login">Sign In</button>
+            </div>
+            <div class="toggle-panel toggle-right">
+                <h1>Hello, Lasallian!</h1>
+                <p>Register here with your personal details to use the Reservation website</p>
+                <button class="hidden" id="register">Sign Up</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="/common/script.js"></script>
