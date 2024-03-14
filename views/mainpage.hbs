@@ -233,7 +233,13 @@
             
                         <label for="reason">Reason for Reservation:</label>
                         <input type="text" id="reason" name="reason" required>
-            
+
+                        <label for="time">Select a Time:</label>
+                        <select id="time" name="time" required>
+                            <option value="">Select a Time Slot</option>
+                                <option value="{{ }}">{{ }}</option>
+                        </select>
+
                         <label for="seat">Select a Seat:</label>
                         <select id="seat" name="seat" required>
                             <option value="">Select a Seat</option>
