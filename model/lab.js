@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
 
-
 const labSchema = new mongoose.Schema({
     labnum: {
-        type: Number,
+        type: String,
         required: true
     }
 });

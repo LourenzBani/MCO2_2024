@@ -49,7 +49,7 @@
                         <h1 id="currentDate">{{ currentDate }}</h1>
                     </div>
                     <div>
-                        <h2 id="current-lab">Current Lab: Lab {{ lab.labnum }}</h2>
+                        <h2 id="current-lab">Current Lab: Lab 1</h2>
                     </div>
                 </div>
 
@@ -62,7 +62,7 @@
                     </div>
                     <div class="availability" id="reserved">
                         <div class="icon-name-style status-icons" id="number">
-                            <img id="red-dot" src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Basic_red_dot.png"> <div class="icon-padding">0</div>
+                            <img id="red-dot" src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Basic_red_dot.png"> <div class="icon-padding">{{ reservations.length }}</div>
                         </div>
                         Reserved
                     </div>
@@ -75,9 +75,9 @@
                 <div class="dropdown" id="myDropdown">
                     <button class="button dropbtn"><i class="fa-solid fa-computer"></i> Go to Lab</button>
                     <div class="dropdown-content">
-                        {{#each lab}}
+                        {{#each reservation}}
                         <a href="#" onclick="changeLab('Lab #1')">
-                            <p>Lab {{ lab.labnum }}</p>
+                            <p>Lab {{ labnum }}</p>
                         </a>
                         {{/each}}
                     </div>
@@ -88,8 +88,8 @@
                     <input type="date" id="selectedDate">
                 </div>
                 
-                <button class="button" onclick="goToPreviousDay()" action="prevDay">Prev Day<i class="fa-solid fa-chevron-left"></i> </button>
-                <button class="button" onclick="goToNextDay()" action="nextDay">Next Day<i class="fa-solid fa-chevron-right"></i> </button>
+                <button class="button" action="prevDay"><i class="fa-solid fa-chevron-left"></i> </button>
+                <button class="button" action="nextDay"><i class="fa-solid fa-chevron-right"></i> </button>
             </div>
 
             <div class="main-slots">
@@ -151,21 +151,28 @@
                         <div class="row">
                             <div class="colheader colspan-100"><b><h2>Seats</h2></b></div>
                         </div>
+                        
+
+                            {{#each reservation}}
+                            <div class="col {{status}}">{{seatnum}}</div>
+                            {{/each}}
+                        
+
                         <div class="row">
                             <div class="col-sec">Sec A</div>
                             <div class="col-sec">Sec B</div>
                             <div class="col-sec">Sec C</div>
                         </div>
                         <div class="row">
-                            <div class="col">A1</div>
-                            <div class="col">A2</div>
-                            <div class="col">A3</div>
-                            <div class="col">B1</div>
-                            <div class="col">B2</div>
-                            <div class="col">B3</div>
-                            <div class="col">C1</div>
-                            <div class="col">C2</div>
-                            <div class="col">C3</div>
+                            <div class="col status">A1</div>
+                            <div class="col status">A2</div>
+                            <div class="col status">A3</div>
+                            <div class="col status">B1</div>
+                            <div class="col status">B2</div>
+                            <div class="col status">B3</div>
+                            <div class="col status">C1</div>
+                            <div class="col status">C2</div>
+                            <div class="col status">C3</div>
                         </div>
                         <div class="row">
                             <div class="col-sec">Sec D</div>
@@ -173,15 +180,15 @@
                             <div class="col-sec">Sec F</div>
                         </div>
                         <div class="row">
-                            <div class="col">D1</div>
-                            <div class="col">D2</div>
-                            <div class="col">D3</div>
-                            <div class="col">E1</div>
-                            <div class="col">E2</div>
-                            <div class="col">E3</div>
-                            <div class="col">F1</div>
-                            <div class="col">F2</div>
-                            <div class="col">F3</div>
+                            <div class="col status">D1</div>
+                            <div class="col status">D2</div>
+                            <div class="col status">D3</div>
+                            <div class="col status">E1</div>
+                            <div class="col status">E2</div>
+                            <div class="col status">E3</div>
+                            <div class="col status">F1</div>
+                            <div class="col status">F2</div>
+                            <div class="col status">F3</div>
                         </div>
                         <div class="row">
                             <div class="col-sec">Sec G</div>
@@ -189,15 +196,15 @@
                             <div class="col-sec">Sec I</div>
                         </div>
                         <div class="row">
-                            <div class="col">G1</div>
-                            <div class="col">G2</div>
-                            <div class="col">G3</div>
-                            <div class="col">H1</div>
-                            <div class="col">H2</div>
-                            <div class="col">H3</div>
-                            <div class="col">I1</div>
-                            <div class="col">I2</div>
-                            <div class="col">I3</div>
+                            <div class="col status">G1</div>
+                            <div class="col status">G2</div>
+                            <div class="col status">G3</div>
+                            <div class="col status">H1</div>
+                            <div class="col status">H2</div>
+                            <div class="col status">H3</div>
+                            <div class="col status">I1</div>
+                            <div class="col status">I2</div>
+                            <div class="col status">I3</div>
                         </div>
                     </div>
                 </div>
@@ -216,12 +223,6 @@
                     <form id="reservation-form">
                         <label for="name">Name:</label>
                         <input type="text" id="name" name="name" required>
-            
-                        <label for="section">Section:</label>
-                        <input type="text" id="section" name="section" required>
-            
-                        <label for="reason">Reason for Reservation:</label>
-                        <input type="text" id="reason" name="reason" required>
 
                         <label for="time">Select a Time:</label>
                         <select id="time" name="time" required>
@@ -290,6 +291,5 @@
         </div>
     </div>
 
-    <script src="date-navigation.js">
-        const currentDate = "{{currentDate}}";
-    </script>
+
+<script src="../public/mainscript.js"></script>

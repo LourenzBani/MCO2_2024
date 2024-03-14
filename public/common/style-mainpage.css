@@ -318,7 +318,7 @@ body{
 
 .table-container {
     display: flex;
-    flex-wrap: wrap;
+    flex: 1;
     width: 80%;
     border: 2px solid #04AA6D;
     border-radius: 5px;
@@ -326,20 +326,10 @@ body{
 
 .row {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row;
     width: 100%;
 }
 
-#col-reserved{
-    background-color: rgb(255, 0, 0);
-
-}
-
-
-#col-inuse{
-    background-color: orange;
-
-}
 
 .colheader {
     flex: 1;
@@ -352,13 +342,33 @@ body{
     flex: 1;
     text-align: center;
     padding: 5px;
-    background-color: #04AA6D;
+    /**background-color: #04AA6D;**/
     border: 1px solid #ffffff;
     color: black;
     text-align: center;
     opacity: 0.6;
     transition: 0.3s;
+    width: 13%;
 }
+
+.vacant {
+    background-color: #04AA6D;
+}
+
+.vacant:hover {
+    opacity: 1;
+    background-color: #04AA6D;
+}
+
+.reserved {
+    background-color: #e54c4c;
+}
+
+.reserved:hover {
+    opacity: 1;
+    background-color: #e54c4c;
+}
+
 .col-sec{
     flex: 1;
     text-align: center;
@@ -372,10 +382,6 @@ body{
 }
 
 
-.col:hover {
-    opacity: 1;
-    background-color: #04AA6D;
-}
 
 
 .colspan-100 {

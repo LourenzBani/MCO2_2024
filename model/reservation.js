@@ -1,34 +1,38 @@
 const mongoose = require("mongoose");
 
-const seatSchema = new mongoose.Schema({
-    date_id: {
+const reserveSchema = new mongoose.Schema({
+    labnum: {
         type: String,
         required: true
     },
-    day_reserved: {
+    seatnum: {
         type: String,
         required: true
     },
-    reserved_by: {
+    timereserved: {
         type: String,
         required: true
     },
-    seat_num: {
+    slotreserverd: {
         type: String,
         required: true
     },
-    time_reserved: {
+    datereserved: {
         type: String,
         required: true
     },
-    time_slot_from: {
+    reservedby: {
         type: String,
         required: true
     },
-    time_slot_to: {
+    order:  {
+        type: Number,
+        required: true
+    },
+    status: {
         type: String,
         required: true
     }
 });
 
-module.exports = mongoose.model("seat", seatSchema);
+module.exports = mongoose.model("reservations", reserveSchema);
