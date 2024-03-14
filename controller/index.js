@@ -6,6 +6,7 @@ const handlebars = require('express-handlebars');
 const mongoose = require('mongoose');
 
 const collection_user = require('../model/user');
+const collection_date = require('../model/date');
 
 const server = express();
 
@@ -26,7 +27,7 @@ connect.then(() => {
 });
 
 function errorFn(err) {
-    console.log('Error fond. Please trace!');
+    console.log('Error found. Please trace!');
     console.error(err);
 }
 
@@ -104,16 +105,67 @@ server.get('/', function(req, resp){
     });
 });
 
+function goToPreviousDay() {
+    const currentDateObj = new Date(currentDate);
+    const previousDate = new Date(currentDateObj.getTime() - 24 * 60 * 60 * 1000);
+    updateCurrentDate(previousDate);
+}
+
+function goToNextDay() {
+    const currentDateObj = new Date(currentDate);
+    const nextDate = new Date(currentDateObj.getTime() + 24 * 60 * 60 * 1000);
+    updateCurrentDate(nextDate);
+}
+
+function updateCurrentDate(newDate) {
+    // Update the global currentDate variable
+    currentDate = newDate.toISOString().split('T')[0];
+    
+    // Update the current date displayed on the main page
+    document.getElementById('currentDate').innerText = 'Current Date: ' + newDate.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+    
+    // Redirect to the main page with the updated date
+    window.location.href = '/main?date=' + currentDate;
+}
+
+server.post("/main", async (req, res) => {
+    const action = req.body.action;
+
+    if (action === "nextDay") {
+        goToNextDay();
+    } else if (action === "prevDay") {
+        goToPreviousDay();
+    } else if (action === "reserve") {
+        
+    } else {
+        res.status(400).send("Invalid action");
+    }
+});
+
 // Main page (student view)
 server.get('/main', function(req, resp){
-
     const user = req.session.user;
+    const currentDate = new Date().toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long', 
+        day: 'numeric' 
+    });
+    const date = req.session.date;
+    
     if (!user) {
         return resp.status(401).send("Unauthorized");
     }
     resp.render('mainpage',{
         layout: 'main',
-        user: user
+        user: user,
+        date: date,
+        currentDate: currentDate
     });
 });
 

@@ -46,10 +46,10 @@
             <div class="main-info">
                 <div class="current-info-date">
                     <div>
-                        <h1>Wednesday, Feb 14, 2024</h1>
+                        <h1 id="currentDate">{{ currentDate }}</h1>
                     </div>
                     <div>
-                        <h2 id="current-lab">Current Lab: Lab #1</h2>
+                        <h2 id="current-lab">Current Lab: Lab {{ lab.labnum }}</h2>
                     </div>
                 </div>
 
@@ -75,22 +75,11 @@
                 <div class="dropdown" id="myDropdown">
                     <button class="button dropbtn"><i class="fa-solid fa-computer"></i> Go to Lab</button>
                     <div class="dropdown-content">
+                        {{#each lab}}
                         <a href="#" onclick="changeLab('Lab #1')">
-                            <p>Lab #1</p>
+                            <p>Lab {{ lab.labnum }}</p>
                         </a>
-                        <a href="#" onclick="changeLab('Lab #2')">
-                            <p>Lab #2</p>
-                        </a>
-                        <a href="#" onclick="changeLab('Lab #3')">
-                            <p>Lab #3</p>
-                        </a>
-                        <a href="#" onclick="changeLab('Lab #4')">
-                            <p>Lab #4</p>
-                        </a>
-                        <a href="#" onclick="changeLab('Lab #5')">
-                            <p>Lab #5</p>
-                        </a>
-                        
+                        {{/each}}
                     </div>
                 </div>
     
@@ -98,9 +87,9 @@
                 <div id="calendarPopup" class="calendar-popup">
                     <input type="date" id="selectedDate">
                 </div>
-                <button class="button"> <i class="fa-solid fa-chevron-left"></i> </button>
-                <button class="button"> <i class="fa-solid fa-chevron-right"></i> </button>
-                <button class="button">Next Available <i class="fa-solid fa-forward-fast"></i></button>
+                
+                <button class="button" onclick="goToPreviousDay()" action="prevDay">Prev Day<i class="fa-solid fa-chevron-left"></i> </button>
+                <button class="button" onclick="goToNextDay()" action="nextDay">Next Day<i class="fa-solid fa-chevron-right"></i> </button>
             </div>
 
             <div class="main-slots">
@@ -237,7 +226,9 @@
                         <label for="time">Select a Time:</label>
                         <select id="time" name="time" required>
                             <option value="">Select a Time Slot</option>
-                                <option value="{{ }}">{{ }}</option>
+                            {{!-- {{#each}} --}}
+                                <option value="1">1</option>
+                            {{!--{{/each}} --}}
                         </select>
 
                         <label for="seat">Select a Seat:</label>
@@ -299,36 +290,6 @@
         </div>
     </div>
 
-
-    <script src="./mainscript.js"></script>
-    <script>
-
-        let dropdown = document.getElementById('myDropdown');
-        let dropdownContent = dropdown.querySelector('.dropdown-content');
-
-        dropdown.querySelector('.dropbtn').addEventListener('click', function() {
-            dropdown.classList.toggle('active');
-        });
-
-        dropdownContent.querySelectorAll('p').forEach(function(option) {
-            option.addEventListener('click', function() {
-            console.log('Selected option:', this.textContent);
-            dropdown.classList.remove('active');
-            });
-        });
-
-        document.getElementById('calendarButton').addEventListener('click', function() {
-            document.getElementById('calendarPopup').style.display = 'block';
-          // Set a timeout to hide the popup after 3 seconds (3000 milliseconds)
-            setTimeout(function() {
-            document.getElementById('calendarPopup').style.display = 'none';
-            }, 3000);
-        });
-    
-        document.getElementById('selectedDate').addEventListener('change', function() {
-          // Here you can handle the selected date
-            console.log('Selected date:', this.value);
-          // You can hide the calendar popup after a date is selected
-            document.getElementById('calendarPopup').style.display = 'none';
-        });
+    <script src="date-navigation.js">
+        const currentDate = "{{currentDate}}";
     </script>
