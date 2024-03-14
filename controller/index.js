@@ -185,15 +185,22 @@ server.get('/admin', function(req, resp){
 
 // profile page 
 server.get('/profile', function(req, resp){
+    const user = req.session.user;
     resp.render('profilepage',{
-        layout: 'profile' 
+        layout: 'profile',
+        user: user,
+        lab: lab,
+        seat: seat,
+        date: date
     });
 });
 
-// profile page 
+// profile edit page 
 server.get('/profile_edit', function(req, resp){
+    const user = req.session.user;
     resp.render('profile_edit',{
-        layout: 'profile' 
+        layout: 'profile',
+        user: user
     });
 });
 
