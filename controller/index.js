@@ -136,46 +136,74 @@ server.post("/main", async (req, res) => {
     }
 });
 
+async function getReservationCounts() {
+    try {
+        // Fetch all reservations
+        const reservations = await Reservation.find();
+
+        // Count reserved and vacant seats
+        let reservedCount = 0;
+        let vacantCount = 0;
+        for (const reservation of reservations) {
+            if (reservation.status === 'reserved') {
+                reservedCount++;
+            } else if (reservation.status === 'vacant') {
+                vacantCount++;
+            }
+        }
+
+        // Return counts
+        return { reservedCount, vacantCount };
+    } catch (error) {
+        console.error('Error fetching reservation data:', error);
+        return { reservedCount: 0, vacantCount: 0 }; // Return 0 counts in case of error
+    }
+}
+
+const totalSeats = 27;
 
 
 // Main page (student view)
-server.get('/main', function(req, resp){
+server.get('/main', async function(req, resp){
     const user = req.session.user;
     const searchQuery = {};
     
-
-    collection_reservation.aggregate([
-        { $match: { status: "reserved" } }, // Filter documents where status is "reserved"
-        { $group: { _id: null, count: { $sum: 1 } } } // Count the filtered documents
-    ]).exec()
-    .then(result => {
+    try {
+        // Fetch reservation counts
+        const result = await collection_reservation.aggregate([
+            { $match: { status: "reserved" } }, // Filter documents where status is "reserved"
+            { $group: { _id: null, count: { $sum: 1 } } } // Count the filtered documents
+        ]).exec();
         console.log('Count of reserved documents:', result);
-    })
-    .catch(err => {
-        console.error(err);
-        // Handle error
-    });
 
+        // Extract reserved count from the result
+        const reservedCount = result.length > 0 ? result[0].count : 0;
+        const vacantCount = result.length > 0 ? totalSeats - result[0].count : totalSeats;
 
-    const currentDate = new Date().toLocaleDateString('en-US', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long', 
-        day: 'numeric' 
-    });
-    
-    if (!user) {
-        return resp.status(401).send("Unauthorized");
+        // Get current date
+        const currentDate = new Date().toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long', 
+            day: 'numeric' 
+        });
+
+        // Fetch reservations
+        const post_reservations = await collection_reservation.find(searchQuery).lean();
+
+        // Render the main page with counts and reservations
+        resp.render('mainpage', {
+            layout: 'main',
+            user: user,
+            reservation: post_reservations,
+            currentDate: currentDate,
+            reservedCount: reservedCount,
+            vacantCount: vacantCount
+        });
+    } catch (error) {
+        console.error('Error rendering main page:', error);
+        resp.status(500).send('Internal Server Error');
     }
-    collection_reservation.find(searchQuery).lean().then(function(post_reservations){
-        resp.render('mainpage',{
-                layout: 'main',
-                user: user,
-                reservation: post_reservations,
-                currentDate: currentDate
-            });
-    });
-    
 });
 
 // tech page (admin view)
