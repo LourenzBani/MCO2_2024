@@ -62,7 +62,7 @@
                     </div>
                     <div class="availability" id="reserved">
                         <div class="icon-name-style status-icons" id="number">
-                            <img id="red-dot" src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Basic_red_dot.png"> <div class="icon-padding">{{ reservations.length }}</div>
+                            <img id="red-dot" src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Basic_red_dot.png"> <div class="icon-padding">0</div>
                         </div>
                         Reserved
                     </div>
@@ -152,60 +152,12 @@
                             <div class="colheader colspan-100"><b><h2>Seats</h2></b></div>
                         </div>
                         
-
+                        <div class="row">
                             {{#each reservation}}
                             <div class="col {{status}}">{{seatnum}}</div>
                             {{/each}}
-                        
+                        </div>
 
-                        <div class="row">
-                            <div class="col-sec">Sec A</div>
-                            <div class="col-sec">Sec B</div>
-                            <div class="col-sec">Sec C</div>
-                        </div>
-                        <div class="row">
-                            <div class="col status">A1</div>
-                            <div class="col status">A2</div>
-                            <div class="col status">A3</div>
-                            <div class="col status">B1</div>
-                            <div class="col status">B2</div>
-                            <div class="col status">B3</div>
-                            <div class="col status">C1</div>
-                            <div class="col status">C2</div>
-                            <div class="col status">C3</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sec">Sec D</div>
-                            <div class="col-sec">Sec E</div>
-                            <div class="col-sec">Sec F</div>
-                        </div>
-                        <div class="row">
-                            <div class="col status">D1</div>
-                            <div class="col status">D2</div>
-                            <div class="col status">D3</div>
-                            <div class="col status">E1</div>
-                            <div class="col status">E2</div>
-                            <div class="col status">E3</div>
-                            <div class="col status">F1</div>
-                            <div class="col status">F2</div>
-                            <div class="col status">F3</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sec">Sec G</div>
-                            <div class="col-sec">Sec H</div>
-                            <div class="col-sec">Sec I</div>
-                        </div>
-                        <div class="row">
-                            <div class="col status">G1</div>
-                            <div class="col status">G2</div>
-                            <div class="col status">G3</div>
-                            <div class="col status">H1</div>
-                            <div class="col status">H2</div>
-                            <div class="col status">H3</div>
-                            <div class="col status">I1</div>
-                            <div class="col status">I2</div>
-                            <div class="col status">I3</div>
-                        </div>
                     </div>
                 </div>
             </div>

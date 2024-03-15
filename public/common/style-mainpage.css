@@ -311,15 +311,16 @@ body{
 .seats {
     padding-top: 20px;
     padding-left: 20px;
-    width: 70%;
+    width: 75%;
     align-items: center;
     justify-content: center;
 }
 
 .table-container {
     display: flex;
-    flex: 1;
-    width: 80%;
+    flex-direction: column;
+    flex: wrap;
+    width: 75%;
     border: 2px solid #04AA6D;
     border-radius: 5px;
 }
@@ -327,7 +328,8 @@ body{
 .row {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    flex-wrap: wrap;
+    width: auto;
 }
 
 
@@ -339,7 +341,7 @@ body{
 }
 
 .col {
-    flex: 1;
+    width: 36%;
     text-align: center;
     padding: 5px;
     /**background-color: #04AA6D;**/
@@ -370,7 +372,7 @@ body{
 }
 
 .col-sec{
-    flex: 1;
+    flex: wrap;
     text-align: center;
     padding: 5px;
     background-color: #ffffff;

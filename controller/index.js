@@ -3,6 +3,7 @@ const session = require('express-session');
 const crypto = require('crypto');
 const bodyParser = require('body-parser');
 const handlebars = require('express-handlebars');
+const Handler = require('handlebars')
 const mongoose = require('mongoose');
 
 const collection_user = require('../model/user');
@@ -32,6 +33,15 @@ function errorFn(err) {
     console.log('Error found. Please trace!');
     console.error(err);
 }
+
+Handler.registerHelper('add', function (num1, num2) {
+    return num1 + num2;
+});
+
+Handler.registerHelper('subtract', function (num1, num2) {
+    return num1 - num2;
+});
+
 
 // configure session 
 const secretKey = crypto.randomBytes(64).toString('hex');
@@ -126,21 +136,26 @@ server.post("/main", async (req, res) => {
     }
 });
 
-collection_reservation.countDocuments({})
-    .then(count => {
-        console.log('Number of documents:', count);
-        // Do something with the count, such as passing it to your main page template
-        // Or perform other operations based on the count
+
+
+// Main page (student view)
+server.get('/main', function(req, resp){
+    const user = req.session.user;
+    const searchQuery = {};
+    
+
+    collection_reservation.aggregate([
+        { $match: { status: "reserved" } }, // Filter documents where status is "reserved"
+        { $group: { _id: null, count: { $sum: 1 } } } // Count the filtered documents
+    ]).exec()
+    .then(result => {
+        console.log('Count of reserved documents:', result);
     })
     .catch(err => {
         console.error(err);
         // Handle error
     });
 
-// Main page (student view)
-server.get('/main', function(req, resp){
-    const user = req.session.user;
-    const searchQuery = {};
 
     const currentDate = new Date().toLocaleDateString('en-US', {
         weekday: 'long',
@@ -152,8 +167,6 @@ server.get('/main', function(req, resp){
     if (!user) {
         return resp.status(401).send("Unauthorized");
     }
-
-
     collection_reservation.find(searchQuery).lean().then(function(post_reservations){
         resp.render('mainpage',{
                 layout: 'main',
