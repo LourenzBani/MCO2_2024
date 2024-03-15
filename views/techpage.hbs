@@ -1,7 +1,7 @@
 <div class="container">
         <div class="sidebar-menu">
             <div class="profile-settings">
-                <a href="/profile" id="sidebar-text">
+                <a href="/profilepage" id="sidebar-text">
                 <div class="icon-name-style sidebar-opts opts-profile" id="profile">
                     <div id="img">
                         <img id="avatar" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png">
@@ -40,7 +40,7 @@
             <div class="main-info">
                 <div class="current-info-date">
                     <div>
-                        <h1>Wednesday, Feb 14, 2024</h1>
+                        <h1>{{ currentDate }}</h1>
                     </div>
                     <div>
                         <h2>Current Lab: Lab #1</h2>
@@ -50,19 +50,13 @@
                 <div class="current-info-availability">
                     <div class="availability" id="avail">
                         <div class="icon-name-style status-icons" id="number">
-                            <img id="green-dot" src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Basic_green_dot.png"> <div class="icon-padding">22</div>
+                            <img id="green-dot" src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Basic_green_dot.png"> <div class="icon-padding">{{ vacantCount }}</div>
                         </div>
                         Vacant
                     </div>
-                    <div class="availability mid-avail" id="inuse">
-                        <div class="icon-name-style status-icons" id="number">
-                            <img id="orange-dot" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Location_dot_orange.svg/1024px-Location_dot_orange.svg.png"> <div class="icon-padding">3</div>
-                        </div>
-                        In-use
-                    </div>
                     <div class="availability" id="reserved">
                         <div class="icon-name-style status-icons" id="number">
-                            <img id="red-dot" src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Basic_red_dot.png"> <div class="icon-padding">2</div>
+                            <img id="red-dot" src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Basic_red_dot.png"> <div class="icon-padding">{{ reservedCount }}</div>
                         </div>
                         Reserved
                     </div>
@@ -93,7 +87,6 @@
                 </div>
                 <button class="button"> <i class="fa-solid fa-chevron-left"></i> </button>
                 <button class="button"> <i class="fa-solid fa-chevron-right"></i> </button>
-                <button class="button">Next Available <i class="fa-solid fa-forward-fast"></i></button>
             </div>
 
             <div class="main-slots">
@@ -156,112 +149,41 @@
                             <div class="colheader colspan-100"><b>Seats</b></div>
                         </div>
                         <div class="row">
-                            <div class="col-sec">Sec A</div>
-                            <div class="col-sec">Sec B</div>
-                            <div class="col-sec">Sec C</div>
-                        </div>
-                        <div class="row">
-                            <div class="col">A1</div>
-                            <div class="col" id="col-reserved">A2</div>
-                            <div class="col">A3</div>
-                            <div class="col">B1</div>
-                            <div class="col">B2</div>
-                            <div class="col" id="col-inuse">B3</div>
-                            <div class="col">C1</div>
-                            <div class="col">C2</div>
-                            <div class="col">C3</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sec">Sec D</div>
-                            <div class="col-sec">Sec E</div>
-                            <div class="col-sec">Sec F</div>
-                        </div>
-                        <div class="row">
-                            <div class="col">D1</div>
-                            <div class="col" id="col-reserved">D2</div>
-                            <div class="col">D3</div>
-                            <div class="col" id="col-inuse">E1</div>
-                            <div class="col">E2</div>
-                            <div class="col" id="col-inuse">E3</div>
-                            <div class="col">F1</div>
-                            <div class="col">F2</div>
-                            <div class="col">F3</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sec">Sec G</div>
-                            <div class="col-sec">Sec H</div>
-                            <div class="col-sec">Sec I</div>
-                        </div>
-                        <div class="row">
-                            <div class="col">G1</div>
-                            <div class="col">G2</div>
-                            <div class="col">G3</div>
-                            <div class="col">H1</div>
-                            <div class="col">H2</div>
-                            <div class="col">H3</div>
-                            <div class="col">I1</div>
-                            <div class="col">I2</div>
-                            <div class="col">I3</div>
+                            {{#each reservation}}
+                            <div class="col {{status}}">{{seatnum}}</div>
+                            {{/each}}
                         </div>
                     </div>
                 </div>
             </div>
             <div class="main-footer scroll">
-                
+                {{#each reservation}}
+                {{#if istaken}}
                 <div class="reserve-card">
                     <h3 id="card-title"><u>Reservation Details</u></h3>
                     <div class="card-info">
-                        <div class="info-name">Reservation No.:</div> 
-                        <div class="info-deet">1</div> 
-                    </div>
-                    <div class="card-info">
                         <div class="info-name">Name:</div> 
-                        <div class="info-deet">Lourenz J.</div> 
+                        <div class="info-deet">{{reservedby}}</div> 
                     </div>
                     <div class="card-info">
                         <div class="info-name">Time:</div> 
-                        <div class="info-deet">9:30 - 10:00 AM</div> 
+                        <div class="info-deet">{{slotreserved}}</div> 
                     </div>
                     <div class="card-info">
                         <div class="info-name">Seat No.:</div> 
-                        <div class="info-deet">A2</div> 
+                        <div class="info-deet">{{seatnum}}</div> 
                     </div>
                     <div class="card-info">
-                        <div class="info-name">Reason:</div> 
-                        <div class="info-deet">Online class</div> 
+                        <div class="info-name">Date Reserved:</div> 
+                        <div class="info-deet">{{datereserved}}</div> 
                     </div>
                     <div class="card-buttons">
                         <button class="card-btn edit"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
                         <button class="card-btn cancel"><i class="fa-solid fa-xmark"></i> Cancel</button>
                     </div>
                 </div>
-                <div class="reserve-card">
-                    <h3 id="card-title"><u>Reservation Details</u></h3>
-                    <div class="card-info">
-                        <div class="info-name">Reservation No.:</div> 
-                        <div class="info-deet">2</div> 
-                    </div>
-                    <div class="card-info">
-                        <div class="info-name">Name:</div> 
-                        <div class="info-deet">Humphrey P</div> 
-                    </div>
-                    <div class="card-info">
-                        <div class="info-name">Time:</div> 
-                        <div class="info-deet">11:30 - 12:00 NN</div> 
-                    </div>
-                    <div class="card-info">
-                        <div class="info-name">Seat No.:</div> 
-                        <div class="info-deet">D2</div> 
-                    </div>
-                    <div class="card-info">
-                        <div class="info-name">Reason:</div> 
-                        <div class="info-deet">Web browsing</div> 
-                    </div>
-                    <div class="card-buttons">
-                        <button class="card-btn edit"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
-                        <button class="card-btn cancel"><i class="fa-solid fa-xmark"></i> Cancel</button>
-                    </div>
-                </div>
+                {{/if}}
+                {{/each}}
             </div>
         </div>
         <div class="main-ads">
