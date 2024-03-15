@@ -32,6 +32,10 @@ const reserveSchema = new mongoose.Schema({
     status: {
         type: String,
         required: true
+    },
+    istaken: {
+        type: Number,
+        required: true
     }
 });
 
