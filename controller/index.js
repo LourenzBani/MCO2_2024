@@ -10,6 +10,12 @@ const collection_user = require('../model/user');
 const collection_date = require('../model/date');
 
 const collection_reservation = require('../model/reservation');
+const collection_reservation2 = require('../model/tworeservation');
+const collection_reservation3 = require('../model/threereservation');
+const collection_reservation4 = require('../model/fourreservation');
+const collection_reservation5 = require('../model/fivereservation');
+
+const collection_lab = require('../model/reservation');
 
 const server = express();
 
@@ -118,12 +124,39 @@ server.get('/', function(req, resp){
 });
 
 
+
+
 server.post("/main", async (req, res) => {
     const action = req.body.action;
 
-    if (action === "nextDay") {
+    if (action === "nextPage") {
+
+
+        res.redirect('/main2');
         
-    } else if (action === "prevDay") {
+    } else if (action === "prevPage") {
+        res.redirect('/main');
+    } else if (action === "reserve") {
+        const reservation_data = {
+            labnum: req.body.labnum,
+            seatnum: req.body.seatnum,
+
+        } 
+    } else {
+        res.status(400).send("Invalid action");
+    }
+});
+
+server.post("/main2", async (req, res) => {
+    const action = req.body.action;
+
+    if (action === "nextPage") {
+
+
+        res.redirect('/main3');
+        
+    } else if (action === "prevPage") {
+        res.redirect('/main');
         
     } else if (action === "reserve") {
         const reservation_data = {
@@ -136,6 +169,70 @@ server.post("/main", async (req, res) => {
     }
 });
 
+server.post("/main3", async (req, res) => {
+    const action = req.body.action;
+
+    if (action === "nextPage") {
+
+
+        res.redirect('/main4');
+        
+    } else if (action === "prevPage") {
+        res.redirect('/main2');
+    } else if (action === "reserve") {
+        const reservation_data = {
+            labnum: req.body.labnum,
+            seatnum: req.body.seatnum,
+
+        } 
+    } else {
+        res.status(400).send("Invalid action");
+    }
+});
+
+server.post("/main4", async (req, res) => {
+    const action = req.body.action;
+
+    if (action === "nextPage") {
+
+
+        res.redirect('/main5');
+        
+    } else if (action === "prevPage") {
+        res.redirect('/main3');
+        
+    } else if (action === "reserve") {
+        const reservation_data = {
+            labnum: req.body.labnum,
+            seatnum: req.body.seatnum,
+
+        } 
+    } else {
+        res.status(400).send("Invalid action");
+    }
+});
+
+server.post("/main5", async (req, res) => {
+    const action = req.body.action;
+
+    if (action === "nextPage") {
+
+
+        res.redirect('/main5');
+        
+    } else if (action === "prevPage") {
+        res.redirect('/main4');
+        
+    } else if (action === "reserve") {
+        const reservation_data = {
+            labnum: req.body.labnum,
+            seatnum: req.body.seatnum,
+
+        } 
+    } else {
+        res.status(400).send("Invalid action");
+    }
+});
 
 
 
@@ -152,7 +249,6 @@ server.get('/main', async function(req, resp){
             { $match: { status: "reserved" } }, // Filter documents where status is "reserved"
             { $group: { _id: null, count: { $sum: 1 } } } // Count the filtered documents
         ]).exec();
-        console.log('Count of reserved documents:', result);
 
         // Extract reserved count from the result
         const reservedCount = result.length > 0 ? result[0].count : 0;
@@ -168,6 +264,7 @@ server.get('/main', async function(req, resp){
 
         // Fetch reservations
         const post_reservations = await collection_reservation.find(searchQuery).lean();
+        const labs = await collection_lab.find(searchQuery).lean();
 
         // Render the main page with counts and reservations
         resp.render('mainpage', {
@@ -175,6 +272,7 @@ server.get('/main', async function(req, resp){
             user: user,
             reservation: post_reservations,
             currentDate: currentDate,
+            labs: labs, // Pass the lab data to the template
             reservedCount: reservedCount,
             vacantCount: vacantCount
         });
@@ -183,6 +281,187 @@ server.get('/main', async function(req, resp){
         resp.status(500).send('Internal Server Error');
     }
 });
+
+// Main page2 (student view)
+server.get('/main2', async function(req, resp){
+    const user = req.session.user;
+    const searchQuery = {};
+    const totalSeats = 27;
+    
+    try {
+        // Fetch reservation counts
+        const result = await collection_reservation2.aggregate([
+            { $match: { status: "reserved" } }, // Filter documents where status is "reserved"
+            { $group: { _id: null, count: { $sum: 1 } } } // Count the filtered documents
+        ]).exec();
+
+        // Extract reserved count from the result
+        const reservedCount = result.length > 0 ? result[0].count : 0;
+        const vacantCount = result.length > 0 ? totalSeats - result[0].count : totalSeats;
+
+        // Get current date
+        const currentDate = new Date().toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long', 
+            day: 'numeric' 
+        });
+
+        // Fetch reservations
+        const post_reservations = await collection_reservation2.find(searchQuery).lean();
+        const labs = await collection_lab.find(searchQuery).lean();
+
+        // Render the main page with counts and reservations
+        resp.render('mainpage2', {
+            layout: 'main',
+            user: user,
+            reservation: post_reservations,
+            currentDate: currentDate,
+            labs: labs, // Pass the lab data to the template
+            reservedCount: reservedCount,
+            vacantCount: vacantCount
+        });
+    } catch (error) {
+        console.error('Error rendering main page:', error);
+        resp.status(500).send('Internal Server Error');
+    }
+});
+
+// Main page3 (student view)
+server.get('/main3', async function(req, resp){
+    const user = req.session.user;
+    const searchQuery = {};
+    const totalSeats = 27;
+    
+    try {
+        // Fetch reservation counts
+        const result = await collection_reservation3.aggregate([
+            { $match: { status: "reserved" } }, // Filter documents where status is "reserved"
+            { $group: { _id: null, count: { $sum: 1 } } } // Count the filtered documents
+        ]).exec();
+
+        // Extract reserved count from the result
+        const reservedCount = result.length > 0 ? result[0].count : 0;
+        const vacantCount = result.length > 0 ? totalSeats - result[0].count : totalSeats;
+
+        // Get current date
+        const currentDate = new Date().toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long', 
+            day: 'numeric' 
+        });
+
+        // Fetch reservations
+        const post_reservations = await collection_reservation3.find(searchQuery).lean();
+        const labs = await collection_lab.find(searchQuery).lean();
+
+        // Render the main page with counts and reservations
+        resp.render('mainpage3', {
+            layout: 'main',
+            user: user,
+            reservation: post_reservations,
+            currentDate: currentDate,
+            labs: labs, // Pass the lab data to the template
+            reservedCount: reservedCount,
+            vacantCount: vacantCount
+        });
+    } catch (error) {
+        console.error('Error rendering main page:', error);
+        resp.status(500).send('Internal Server Error');
+    }
+});
+
+// Main page4 (student view)
+server.get('/main4', async function(req, resp){
+    const user = req.session.user;
+    const searchQuery = {};
+    const totalSeats = 27;
+    
+    try {
+        // Fetch reservation counts
+        const result = await collection_reservation4.aggregate([
+            { $match: { status: "reserved" } }, // Filter documents where status is "reserved"
+            { $group: { _id: null, count: { $sum: 1 } } } // Count the filtered documents
+        ]).exec();
+
+        // Extract reserved count from the result
+        const reservedCount = result.length > 0 ? result[0].count : 0;
+        const vacantCount = result.length > 0 ? totalSeats - result[0].count : totalSeats;
+
+        // Get current date
+        const currentDate = new Date().toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long', 
+            day: 'numeric' 
+        });
+
+        // Fetch reservations
+        const post_reservations = await collection_reservation4.find(searchQuery).lean();
+        const labs = await collection_lab.find(searchQuery).lean();
+
+        // Render the main page with counts and reservations
+        resp.render('mainpage4', {
+            layout: 'main',
+            user: user,
+            reservation: post_reservations,
+            currentDate: currentDate,
+            labs: labs, // Pass the lab data to the template
+            reservedCount: reservedCount,
+            vacantCount: vacantCount
+        });
+    } catch (error) {
+        console.error('Error rendering main page:', error);
+        resp.status(500).send('Internal Server Error');
+    }
+});
+
+// Main page5 (student view)
+server.get('/main5', async function(req, resp){
+    const user = req.session.user;
+    const searchQuery = {};
+    const totalSeats = 27;
+    
+    try {
+        // Fetch reservation counts
+        const result = await collection_reservation5.aggregate([
+            { $match: { status: "reserved" } }, // Filter documents where status is "reserved"
+            { $group: { _id: null, count: { $sum: 1 } } } // Count the filtered documents
+        ]).exec();
+
+        // Extract reserved count from the result
+        const reservedCount = result.length > 0 ? result[0].count : 0;
+        const vacantCount = result.length > 0 ? totalSeats - result[0].count : totalSeats;
+
+        // Get current date
+        const currentDate = new Date().toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long', 
+            day: 'numeric' 
+        });
+
+        // Fetch reservations
+        const post_reservations = await collection_reservation5.find(searchQuery).lean();
+        const labs = await collection_lab.find(searchQuery).lean();
+
+        // Render the main page with counts and reservations
+        resp.render('mainpage5', {
+            layout: 'main',
+            user: user,
+            reservation: post_reservations,
+            currentDate: currentDate,
+            labs: labs, // Pass the lab data to the template
+            reservedCount: reservedCount,
+            vacantCount: vacantCount
+        });
+    } catch (error) {
+        console.error('Error rendering main page:', error);
+        resp.status(500).send('Internal Server Error');
+    }
+});
+
 
 // tech page (admin view)
 server.get('/admin', async function(req, resp){
@@ -250,6 +529,8 @@ server.get('/profile_edit', function(req, resp){
         user: user
     });
 });
+
+
 
 const port = process.env.PORT || 3000;
 server.listen(port, function(){

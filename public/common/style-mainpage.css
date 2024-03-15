@@ -551,3 +551,11 @@ body{
     color: rgb(0, 0, 0);
 }
 
+.form{
+    display: flex;
+}
+
+.main-buttons {
+    display: flex;
+    flex-direction: row;
+}

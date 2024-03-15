@@ -1,0 +1,238 @@
+<div class="container">
+        <div class="sidebar-menu">
+            <div class="profile-settings">
+                <a href='/profile' id="sidebar-text">
+                <div class="icon-name-style sidebar-opts opts-profile" id="profile">
+                    <div id="img">
+                        <img id="avatar" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png">
+                    </div>
+                    <div class="icon-padding profile-desc"> 
+                        <div id="account-name">{{ user.name }}</div>
+                        <div id="account-type">{{ user.acctype }}</div>
+                    </div>
+                    
+                    
+                </div>
+                </a>
+
+                <a href="settings.html" id="sidebar-text">
+                <div class="icon-name-style sidebar-opts" id="settings">
+                    <i class="fa-solid fa-gear"></i> <div class="icon-padding">Settings</div>
+                </div>
+                </a>
+
+                <a href="help.html" id="sidebar-text">
+                <div class="icon-name-style sidebar-opts" id="help">
+                    <i class="fa-solid fa-question"></i> <div class="icon-padding">Ask help</div>
+                </div>
+                </a>
+
+            </div>
+
+            <div class="logout">
+                <a href="/" id="sidebar-text">
+                    <div class="icon-name-style sidebar-opts" id="logout">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> <div class="icon-padding"> Log-out </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="main-menu">
+            <div class="main-header">
+                <img src="/common/images/dlsu-logo.png" id="dlsu-logo">
+                <div class="icon-padding"><h1 id="header-title">COMPUTER LAB RESERVATION</h1></div> 
+            </div>
+            <div class="main-info">
+                <div class="current-info-date">
+                    <div>
+                        <h1 id="currentDate">{{ currentDate }}</h1>
+                    </div>
+                    <div>
+                        <h2 id="current-lab">Current Lab: Lab 3</h2>
+                    </div>
+                </div>
+
+                <div class="current-info-availability">
+                    <div class="availability" id="avail">
+                        <div class="icon-name-style status-icons" id="number">
+                            <img id="green-dot" src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Basic_green_dot.png"> <div class="icon-padding">{{ vacantCount }}</div>
+                        </div>
+                        Vacant
+                    </div>
+                    <div class="availability" id="reserved">
+                        <div class="icon-name-style status-icons" id="number">
+                            <img id="red-dot" src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Basic_red_dot.png"> <div class="icon-padding">{{ reservedCount }}</div>
+                        </div>
+                        Reserved
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="main-buttons">
+                <br>
+                <div class="dropdown" id="myDropdown">
+                    <button class="button dropbtn"><i class="fa-solid fa-computer"></i> Go to Lab</button>
+                    <div class="dropdown-content">
+                            <a href="#" >
+                                <p>labnum #1</p>
+                            </a>
+                             <a href="#">
+                                <p>labnum #2</p>
+                            </a>
+                             <a href="#" >
+                                <p>labnum #3</p>
+                            </a>
+                             <a href="#">
+                                <p>labnum #4</p>
+                            </a>
+                             <a href="#" >
+                                <p>labnum #5</p>
+                            </a>
+                    </div>
+                </div>
+    
+                <button id="calendarButton" class="button"><i class="fa-solid fa-calendar-days"></i> Go to Date</button>
+                <div id="calendarPopup" class="calendar-popup">
+                    <input type="date" id="selectedDate">
+                </div>
+                
+                <form action="/main3" method="post">
+                <input type="hidden" name="action" value="prevPage">
+                <button class="button" action="prevPage"><i class="fa-solid fa-chevron-left"></i> </button>
+                </form>
+                 <form action="/main3" method="post">
+                <input type="hidden" name="action" value="nextPage">
+                <button class="button" action="nextPage"><i class="fa-solid fa-chevron-right"></i> </button>
+                </form>
+                
+            </div>
+
+            <div class="main-slots">
+                <div class="timeslot-container">
+                    <div class="time-slots">
+                        <h2 id="timeslot-title"> Time Slots </h2>
+                        <div class="time-slots verti-scroll">
+                            <div class="time-sec">
+                                <div class="time-slot">
+                                    <label>9:00 - 9:30 AM</label>
+                                </div>
+                                <div class="time-slot">
+                                    <label>09:30 - 10:00 AM</label>
+                                </div>
+                            </div>
+                            <div class="time-sec">
+                                <div class="time-slot">
+                                    <label>10:00 - 10:30 AM</label>
+                                </div>
+                                <div class="time-slot">
+                                    <label>10:30 - 11:00 AM</label>
+                                </div>
+                            </div>
+                            <div class="time-sec">
+                                <div class="time-slot">
+                                    <label>11:00 - 11:30 AM</label>
+                                </div>
+                                <div class="time-slot">
+                                    <label>11:30 - 12:00 PM</label>
+                                </div>
+                            </div>
+                            <div class="time-sec">
+                                <div class="time-slot">
+                                    <label>12:00 - 12:30 PM</label>
+                                </div>
+                                <div class="time-slot">
+                                    <label>12:30 - 01:00 PM</label>
+                                </div>
+                            </div>
+                            <div class="time-sec">
+                                <div class="time-slot">
+                                    <label>01:00 - 01:30 PM</label>
+                                </div>
+                                <div class="time-slot">
+                                    <label>01:30 - 02:00 PM</label>
+                                </div>
+                            </div>
+                        
+                        </div>
+                        
+                    </div>
+                    
+                    <br>
+                    
+                </div>
+
+                <div class="seats">
+                    <div class="table-container">
+                        <div class="row">
+                            <div class="colheader colspan-100"><b><h2>Seats</h2></b></div>
+                        </div>
+                        
+                        <div class="row">
+                            {{#each reservation}}
+                            <div class="col {{status}}">{{seatnum}}</div>
+                            {{/each}}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-footer">
+                <div class="left-guidelines">
+                    <h2>Guidelines</h2><br>
+                    <p>1. The computer labs are available for all students of the University
+                        <br><br>2. Reservations can be made one day before the intended date of use through the online booking system.
+                        <br><br>3. Use of the rooms is on a first come first served basis, but prior reservations can be made for guaranteed availability.
+
+                    </p>
+                </div>
+                <div class="form-container">
+                    <form id="reservation-form">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
+
+                        <label for="time">Select a Time:</label>
+                        <select id="time" name="time" required>
+                            <option value="">Select a Time Slot</option>
+                            {{!-- {{#each}} --}}
+                                <option value="1">1</option>
+                            {{!--{{/each}} --}}
+                        </select>
+
+                        <label for="seat">Select a Seat:</label>
+                        <select id="seat" name="seat" required>
+                            <option value="">Select a Seat</option>
+                            {{#each reservation}}
+                            {{#if istaken}}
+                            {{else}}
+                            <option value="{{seatnum}}">{{seatnum}}</option>
+                            {{/if}}
+                            {{/each}}
+                        </select>
+            
+                        <button type="submit" class="button">Reserve</button>
+                    </form>
+                </div>
+                <div class="right-guidelines">
+                    <h2>Prohibited Activities</h2><br>
+                    <p>1. Eating
+                        <br><br>2. Playing cards/board games/musical instruments
+                        <br><br>3. Gambling
+                        <br><br>4. Leaving personal belongings unattended
+                        <br><br>5. Bringing in of additional chairs and other pieces of furniture 
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="main-ads">
+            <img id="img-1" src="https://www.dlsu.edu.ph/wp-content/uploads/2018/09/f-7.jpg">
+            <img id="img-2" src="https://digitaldelasalle.files.wordpress.com/2020/09/goks-0004.jpg">
+            <img id="img-3" src="https://upload.wikimedia.org/wikipedia/commons/a/a8/De_La_Salle_University_Manila_DLSU_Malate_Gokongwei_Hall_Lobby.jpg">
+        </div>
+    </div>
+
+
+<script src="../public/mainscript.js">
+</script>
