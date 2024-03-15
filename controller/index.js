@@ -136,37 +136,15 @@ server.post("/main", async (req, res) => {
     }
 });
 
-async function getReservationCounts() {
-    try {
-        // Fetch all reservations
-        const reservations = await Reservation.find();
 
-        // Count reserved and vacant seats
-        let reservedCount = 0;
-        let vacantCount = 0;
-        for (const reservation of reservations) {
-            if (reservation.status === 'reserved') {
-                reservedCount++;
-            } else if (reservation.status === 'vacant') {
-                vacantCount++;
-            }
-        }
 
-        // Return counts
-        return { reservedCount, vacantCount };
-    } catch (error) {
-        console.error('Error fetching reservation data:', error);
-        return { reservedCount: 0, vacantCount: 0 }; // Return 0 counts in case of error
-    }
-}
-
-const totalSeats = 27;
 
 
 // Main page (student view)
 server.get('/main', async function(req, resp){
     const user = req.session.user;
     const searchQuery = {};
+    const totalSeats = 27;
     
     try {
         // Fetch reservation counts
