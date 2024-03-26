@@ -16,6 +16,10 @@ const signupSchema = new mongoose.Schema({
     acctype: {
         type: String,
         required: true
+    },
+    phone: {
+        type: String,
+        required: true
     }
 });
 

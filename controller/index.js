@@ -467,6 +467,7 @@ server.get('/main5', async function(req, resp){
 server.get('/admin', async function(req, resp){
     const searchQuery = {};
     const user = req.session.user;
+    const totalSeats = 27;
 
     try {
         // Fetch reservation counts
@@ -474,8 +475,7 @@ server.get('/admin', async function(req, resp){
             { $match: { status: "reserved" } }, // Filter documents where status is "reserved"
             { $group: { _id: null, count: { $sum: 1 } } } // Count the filtered documents
         ]).exec();
-        console.log('Count of reserved documents:', result);
-
+        
         // Extract reserved count from the result
         const reservedCount = result.length > 0 ? result[0].count : 0;
         const vacantCount = result.length > 0 ? totalSeats - result[0].count : totalSeats;
@@ -514,10 +514,8 @@ server.get('/profile', function(req, resp){
     const user = req.session.user;
     resp.render('profilepage',{
         layout: 'profile',
-        user: user,
-        lab: lab,
-        seat: seat,
-        date: date
+        user: user
+
     });
 });
 
