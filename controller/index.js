@@ -124,29 +124,80 @@ server.get('/', function(req, resp){
     });
 });
 
+server.post('/main', async (req, res) => {
+    try {
+        const action = req.body.action;
 
+        if (action === "nextPage") {
+            // Redirect to the next page
+            res.redirect('/main2');
+        } else if (action === "prevPage") {
+            // Redirect to the previous page
+            res.redirect('/main');
+        } else if (action === "reserve") {
+            // Generate reservation data\
+            const labnum = '1';
+            const seatnum = req.body.seatnum;
+            const currentDate = new Date();
+            const currentTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const currentDateFormatted = currentDate.toISOString().slice(0, 10); // Format: YYYY-MM-DD
+            const slotReservationTime = new Date(currentDate);
+            slotReservationTime.setMinutes(currentDate.getMinutes() + 30); // Adding 30 minutes
+            const timereserved = currentTime; // Use the current time
+            const slotreserverd = slotReservationTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Use the calculated slot reservation time
+            const datereserved = currentDateFormatted; // Use the current date
+            const reservedby = req.body.name;
+            const order = '1';
+            const status = 'reserved';
+            const istaken = 1;
+           
 
+            // Create a new reservation document
+            const newReservation = new collection_reservation({
+                labnum,
+                seatnum,
+                timereserved,
+                slotreserverd,
+                datereserved,
+                reservedby,
+                order,
+                status,
+                istaken
+            });
 
-server.post("/main", async (req, res) => {
-    const action = req.body.action;
+             // Check if the seat is vacant
+             const existingReservation = await collection_reservation.findOne({ seatnum, istaken: 0 });
 
-    if (action === "nextPage") {
+             if (existingReservation) {
+                 // If the seat is vacant, update the reservation
+                 existingReservation.labnum = labnum;
+                 existingReservation.timereserved = timereserved;
+                 existingReservation.slotreserverd = slotreserverd;
+                 existingReservation.datereserved = datereserved;
+                 existingReservation.reservedby = reservedby;
+                 existingReservation.order = order;
+                 existingReservation.status = status;
+                 existingReservation.istaken = istaken;
+ 
+                 // Save the updated reservation to the database
+                 await existingReservation.save();
+             } else {
+                 // If the seat is already reserved, do nothing
+                 console.log('Seat is already reserved');
+             }
 
-
-        res.redirect('/main2');
-        
-    } else if (action === "prevPage") {
-        res.redirect('/main');
-    } else if (action === "reserve") {
-        const reservation_data = {
-            labnum: req.body.labnum,
-            seatnum: req.body.seatnum,
-
-        } 
-    } else {
-        res.status(400).send("Invalid action");
+            // Redirect to the main page after successful reservation
+            res.redirect('/main');
+        } else {
+            res.status(400).send("Invalid action");
+        }
+    } catch (error) {
+        console.error('Error processing request:', error);
+        res.status(500).send('Internal Server Error');
     }
 });
+
+
 
 server.post("/main2", async (req, res) => {
     const action = req.body.action;

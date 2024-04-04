@@ -189,9 +189,10 @@
                     </p>
                 </div>
                 <div class="form-container">
-                    <form id="reservation-form">
+                    <form id="reservation-form" action="/main" method="POST" onsubmit="return submitForm()">
+                        <input type="hidden" name="action" value="reserve">
                         <label for="name">Name:</label>
-                        <input type="text" id="name" name="name" required>
+                        <input type="text" id="name" name="name" placeholder="Name" required>
 
                         <label for="time">Select a Time:</label>
                         <select id="time" name="time" required>
@@ -211,6 +212,7 @@
                             {{/if}}
                             {{/each}}
                         </select>
+                        <input type="hidden" id="selected-seat" name="seatnum">
             
                         <button type="submit" class="button">Reserve</button>
                     </form>
@@ -233,6 +235,13 @@
         </div>
     </div>
 
+<script>
+    // JavaScript to update the hidden input field with selected seatnum
+    document.getElementById('seat').addEventListener('change', function() {
+        const selectedSeat = this.value;
+        document.getElementById('selected-seat').value = selectedSeat;
+    });
+</script>
 
 <script src="../public/mainscript.js">
 </script>
