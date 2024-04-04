@@ -68,7 +68,8 @@ server.post("/", async (req, res) => {
             name: req.body.name,
             email: req.body.email,
             password: req.body.password,
-            acctype: req.body.acctype
+            acctype: req.body.acctype,
+            phone: req.body.phone
         };
 
         const existUser = await collection_user.findOne({email: data.email});
