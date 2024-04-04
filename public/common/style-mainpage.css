@@ -303,6 +303,17 @@ body{
     width: 100%;
 }
 
+.green {
+    background-color: green !important; /* Override background color */
+}
+
+.time-button {
+    margin: 2px;
+    border: none;
+    background: none;
+    cursor: pointer; /* Add cursor pointer for better UX */
+}
+
 .time-slot label {
     margin: 7px;
 }

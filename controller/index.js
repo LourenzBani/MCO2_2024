@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 
 const collection_user = require('../model/user');
 const collection_date = require('../model/date');
-
+const seatDisplays = require('../model/seatDisplay');
 const collection_reservation = require('../model/reservation');
 const collection_reservation2 = require('../model/tworeservation');
 const collection_reservation3 = require('../model/threereservation');
@@ -47,6 +47,9 @@ Handler.registerHelper('add', function (num1, num2) {
 Handler.registerHelper('subtract', function (num1, num2) {
     return num1 - num2;
 });
+
+
+
 
 
 // configure session 
@@ -144,47 +147,28 @@ server.post('/main', async (req, res) => {
             const slotReservationTime = new Date(currentDate);
             slotReservationTime.setMinutes(currentDate.getMinutes() + 30); // Adding 30 minutes
             const timereserved = currentTime; // Use the current time
-            const slotreserverd = slotReservationTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Use the calculated slot reservation time
+            const slotreserverd = req.body.slotreserverd;
             const datereserved = currentDateFormatted; // Use the current date
             const reservedby = req.body.name;
             const order = '1';
             const status = 'reserved';
             const istaken = 1;
            
-
             // Create a new reservation document
             const newReservation = new collection_reservation({
-                labnum,
-                seatnum,
-                timereserved,
-                slotreserverd,
-                datereserved,
-                reservedby,
-                order,
-                status,
-                istaken
+                    labnum,
+                    seatnum,
+                    timereserved,
+                    slotreserverd,
+                    datereserved,
+                    reservedby,
+                    order,
+                    status,
+                    istaken
             });
 
-             // Check if the seat is vacant
-             const existingReservation = await collection_reservation.findOne({ seatnum, istaken: 0 });
-
-             if (existingReservation) {
-                 // If the seat is vacant, update the reservation
-                 existingReservation.labnum = labnum;
-                 existingReservation.timereserved = timereserved;
-                 existingReservation.slotreserverd = slotreserverd;
-                 existingReservation.datereserved = datereserved;
-                 existingReservation.reservedby = reservedby;
-                 existingReservation.order = order;
-                 existingReservation.status = status;
-                 existingReservation.istaken = istaken;
- 
-                 // Save the updated reservation to the database
-                 await existingReservation.save();
-             } else {
-                 // If the seat is already reserved, do nothing
-                 console.log('Seat is already reserved');
-             }
+            // Save the reservation to the database
+            await newReservation.save();
 
             // Redirect to the main page after successful reservation
             res.redirect('/main');
@@ -199,94 +183,221 @@ server.post('/main', async (req, res) => {
 
 
 
-server.post("/main2", async (req, res) => {
-    const action = req.body.action;
+server.post('/main2', async (req, res) => {
+    try {
+        const action = req.body.action;
 
-    if (action === "nextPage") {
+        if (action === "nextPage") {
+            // Redirect to the next page
+            res.redirect('/main3');
+        } else if (action === "prevPage") {
+            // Redirect to the previous page
+            res.redirect('/main');
+        } else if (action === "reserve") {
+            // Generate reservation data\
+            const labnum = '2';
+            const seatnum = req.body.seatnum;
+            const currentDate = new Date();
+            const currentTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const currentDateFormatted = currentDate.toISOString().slice(0, 10); // Format: YYYY-MM-DD
+            const slotReservationTime = new Date(currentDate);
+            slotReservationTime.setMinutes(currentDate.getMinutes() + 30); // Adding 30 minutes
+            const timereserved = currentTime; // Use the current time
+            const slotreserverd = req.body.slotreserverd;
+            const datereserved = currentDateFormatted; // Use the current date
+            const reservedby = req.body.name;
+            const order = '1';
+            const status = 'reserved';
+            const istaken = 1;
+           
+            // Create a new reservation document
+            const newReservation = new collection_reservation({
+                    labnum,
+                    seatnum,
+                    timereserved,
+                    slotreserverd,
+                    datereserved,
+                    reservedby,
+                    order,
+                    status,
+                    istaken
+            });
 
+            // Save the reservation to the database
+            await newReservation.save();
 
-        res.redirect('/main3');
-        
-    } else if (action === "prevPage") {
-        res.redirect('/main');
-        
-    } else if (action === "reserve") {
-        const reservation_data = {
-            labnum: req.body.labnum,
-            seatnum: req.body.seatnum,
-
-        } 
-    } else {
-        res.status(400).send("Invalid action");
+            // Redirect to the main page after successful reservation
+            res.redirect('/main2');
+        } else {
+            res.status(400).send("Invalid action");
+        }
+    } catch (error) {
+        console.error('Error processing request:', error);
+        res.status(500).send('Internal Server Error');
     }
 });
 
-server.post("/main3", async (req, res) => {
-    const action = req.body.action;
+server.post('/main3', async (req, res) => {
+    try {
+        const action = req.body.action;
 
-    if (action === "nextPage") {
+        if (action === "nextPage") {
+            // Redirect to the next page
+            res.redirect('/main4');
+        } else if (action === "prevPage") {
+            // Redirect to the previous page
+            res.redirect('/main2');
+        } else if (action === "reserve") {
+            // Generate reservation data\
+            const labnum = '3';
+            const seatnum = req.body.seatnum;
+            const currentDate = new Date();
+            const currentTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const currentDateFormatted = currentDate.toISOString().slice(0, 10); // Format: YYYY-MM-DD
+            const slotReservationTime = new Date(currentDate);
+            slotReservationTime.setMinutes(currentDate.getMinutes() + 30); // Adding 30 minutes
+            const timereserved = currentTime; // Use the current time
+            const slotreserverd = req.body.slotreserverd;
+            const datereserved = currentDateFormatted; // Use the current date
+            const reservedby = req.body.name;
+            const order = '1';
+            const status = 'reserved';
+            const istaken = 1;
+           
+            // Create a new reservation document
+            const newReservation = new collection_reservation({
+                    labnum,
+                    seatnum,
+                    timereserved,
+                    slotreserverd,
+                    datereserved,
+                    reservedby,
+                    order,
+                    status,
+                    istaken
+            });
 
+            // Save the reservation to the database
+            await newReservation.save();
 
-        res.redirect('/main4');
-        
-    } else if (action === "prevPage") {
-        res.redirect('/main2');
-    } else if (action === "reserve") {
-        const reservation_data = {
-            labnum: req.body.labnum,
-            seatnum: req.body.seatnum,
-
-        } 
-    } else {
-        res.status(400).send("Invalid action");
+            // Redirect to the main page after successful reservation
+            res.redirect('/main3');
+        } else {
+            res.status(400).send("Invalid action");
+        }
+    } catch (error) {
+        console.error('Error processing request:', error);
+        res.status(500).send('Internal Server Error');
     }
 });
 
-server.post("/main4", async (req, res) => {
-    const action = req.body.action;
+server.post('/main4', async (req, res) => {
+    try {
+        const action = req.body.action;
 
-    if (action === "nextPage") {
+        if (action === "nextPage") {
+            // Redirect to the next page
+            res.redirect('/main5');
+        } else if (action === "prevPage") {
+            // Redirect to the previous page
+            res.redirect('/main3');
+        } else if (action === "reserve") {
+            // Generate reservation data\
+            const labnum = '4';
+            const seatnum = req.body.seatnum;
+            const currentDate = new Date();
+            const currentTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const currentDateFormatted = currentDate.toISOString().slice(0, 10); // Format: YYYY-MM-DD
+            const slotReservationTime = new Date(currentDate);
+            slotReservationTime.setMinutes(currentDate.getMinutes() + 30); // Adding 30 minutes
+            const timereserved = currentTime; // Use the current time
+            const slotreserverd = req.body.slotreserverd;
+            const datereserved = currentDateFormatted; // Use the current date
+            const reservedby = req.body.name;
+            const order = '1';
+            const status = 'reserved';
+            const istaken = 1;
+           
+            // Create a new reservation document
+            const newReservation = new collection_reservation({
+                    labnum,
+                    seatnum,
+                    timereserved,
+                    slotreserverd,
+                    datereserved,
+                    reservedby,
+                    order,
+                    status,
+                    istaken
+            });
 
+            // Save the reservation to the database
+            await newReservation.save();
 
-        res.redirect('/main5');
-        
-    } else if (action === "prevPage") {
-        res.redirect('/main3');
-        
-    } else if (action === "reserve") {
-        const reservation_data = {
-            labnum: req.body.labnum,
-            seatnum: req.body.seatnum,
-
-        } 
-    } else {
-        res.status(400).send("Invalid action");
+            // Redirect to the main page after successful reservation
+            res.redirect('/main4');
+        } else {
+            res.status(400).send("Invalid action");
+        }
+    } catch (error) {
+        console.error('Error processing request:', error);
+        res.status(500).send('Internal Server Error');
     }
 });
 
-server.post("/main5", async (req, res) => {
-    const action = req.body.action;
+server.post('/main5', async (req, res) => {
+    try {
+        const action = req.body.action;
 
-    if (action === "nextPage") {
+        if (action === "nextPage") {
+            // Redirect to the next page
+            res.redirect('/main5');
+        } else if (action === "prevPage") {
+            // Redirect to the previous page
+            res.redirect('/main4');
+        } else if (action === "reserve") {
+            // Generate reservation data\
+            const labnum = '5';
+            const seatnum = req.body.seatnum;
+            const currentDate = new Date();
+            const currentTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const currentDateFormatted = currentDate.toISOString().slice(0, 10); // Format: YYYY-MM-DD
+            const slotReservationTime = new Date(currentDate);
+            slotReservationTime.setMinutes(currentDate.getMinutes() + 30); // Adding 30 minutes
+            const timereserved = currentTime; // Use the current time
+            const slotreserverd = req.body.slotreserverd;
+            const datereserved = currentDateFormatted; // Use the current date
+            const reservedby = req.body.name;
+            const order = '1';
+            const status = 'reserved';
+            const istaken = 1;
+           
+            // Create a new reservation document
+            const newReservation = new collection_reservation({
+                    labnum,
+                    seatnum,
+                    timereserved,
+                    slotreserverd,
+                    datereserved,
+                    reservedby,
+                    order,
+                    status,
+                    istaken
+            });
 
+            // Save the reservation to the database
+            await newReservation.save();
 
-        res.redirect('/main5');
-        
-    } else if (action === "prevPage") {
-        res.redirect('/main4');
-        
-    } else if (action === "reserve") {
-        const reservation_data = {
-            labnum: req.body.labnum,
-            seatnum: req.body.seatnum,
-
-        } 
-    } else {
-        res.status(400).send("Invalid action");
+            // Redirect to the main page after successful reservation
+            res.redirect('/main5');
+        } else {
+            res.status(400).send("Invalid action");
+        }
+    } catch (error) {
+        console.error('Error processing request:', error);
+        res.status(500).send('Internal Server Error');
     }
 });
-
-
 
 
 // Main page (student view)
@@ -297,7 +408,7 @@ server.get('/main', async function(req, resp){
     
     try {
         // Fetch reservation counts
-        const result = await collection_reservation.aggregate([
+        const result = await seatDisplays.aggregate([
             { $match: { status: "reserved" } }, // Filter documents where status is "reserved"
             { $group: { _id: null, count: { $sum: 1 } } } // Count the filtered documents
         ]).exec();
@@ -314,8 +425,21 @@ server.get('/main', async function(req, resp){
             day: 'numeric' 
         });
 
+        const timeSlots = [
+            "09:00 - 09:30 AM",
+            "09:30 - 10:00 AM",
+            "10:00 - 10:30 AM",
+            "10:30 - 11:00 AM",
+            "11:00 - 11:30 AM",
+            "11:30 - 12:00 PM",
+            "12:00 - 12:30 PM",
+            "12:30 - 01:00 PM",
+            "01:00 - 01:30 PM",
+            "01:30 - 02:00 PM"
+        ];
+
         // Fetch reservations
-        const post_reservations = await collection_reservation.find(searchQuery).lean();
+        const post_reservations = await seatDisplays.find(searchQuery).lean();
         const labs = await collection_lab.find(searchQuery).lean();
 
         // Render the main page with counts and reservations
@@ -326,13 +450,108 @@ server.get('/main', async function(req, resp){
             currentDate: currentDate,
             labs: labs, // Pass the lab data to the template
             reservedCount: reservedCount,
-            vacantCount: vacantCount
+            vacantCount: vacantCount,
+            timeSlots: timeSlots
         });
     } catch (error) {
         console.error('Error rendering main page:', error);
         resp.status(500).send('Internal Server Error');
     }
 });
+
+server.post('/updateSeatDisplays', async function(req, resp) {
+    try {
+        const selectedTime = req.body.slotreserverd;
+        const selectedLab = req.body.labnum; // Retrieve selected lab number
+        console.log(selectedTime);
+        console.log(selectedLab); // Check if lab number is received
+
+        // Fetch reservations for the selected time and lab
+        const reservations = await collection_reservation.find({ slotreserverd: selectedTime, labnum: selectedLab }).lean();
+        console.log('Retrieved reservations:', reservations);
+
+        // Define an array to hold all seat numbers from 'A1' to 'I3'
+        const allSeatNumbers = [];
+        for (let letterCode = 65; letterCode <= 73; letterCode++) {
+            const letter = String.fromCharCode(letterCode);
+            for (let number = 1; number <= 3; number++) {
+                allSeatNumbers.push(letter + number);
+            }
+        }
+
+        console.log(allSeatNumbers);
+
+        // Update seatDisplays based on reservations for the selected time and lab
+        await Promise.all(allSeatNumbers.map(async (seatnum) => {
+            // Check if there's a reservation for this seat at the selected time and lab
+            const reservation = reservations.find(reservation => reservation.seatnum === seatnum);
+            
+            // Update seatDisplays based on the presence of reservation
+            if (reservation) {
+                // Seat is reserved
+                await seatDisplays.updateOne(
+                    { seatnum: seatnum },
+                    { $set: { status: "reserved", istaken: 1 } }
+                );
+            } else {
+                // Seat is vacant
+                await seatDisplays.updateOne(
+                    { seatnum: seatnum },
+                    { $set: { status: "vacant", istaken: 0 } }
+                );
+            }
+        }));
+
+        // Fetch updated reservations for rendering
+        const user = req.session.user;
+        const searchQuery = {};
+        const totalSeats = 27;
+        const result = await seatDisplays.aggregate([
+            { $match: { status: "reserved" } },
+            { $group: { _id: null, count: { $sum: 1 } } }
+        ]).exec();
+        const reservedCount = result.length > 0 ? result[0].count : 0;
+        const vacantCount = result.length > 0 ? totalSeats - result[0].count : totalSeats;
+        const currentDate = new Date().toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long', 
+            day: 'numeric' 
+        });
+        const timeSlots = [
+            "09:00 - 09:30 AM",
+            "09:30 - 10:00 AM",
+            "10:00 - 10:30 AM",
+            "10:30 - 11:00 AM",
+            "11:00 - 11:30 AM",
+            "11:30 - 12:00 PM",
+            "12:00 - 12:30 PM",
+            "12:30 - 01:00 PM",
+            "01:00 - 01:30 PM",
+            "01:30 - 02:00 PM"
+        ];
+        const post_reservations = await seatDisplays.find(searchQuery).lean();
+        const labs = await collection_lab.find(searchQuery).lean();
+
+       // Render the main page with counts and reservations
+        resp.render('mainpage', {
+            layout: 'main',
+            user: user,
+            reservation: post_reservations,
+            currentDate: currentDate,
+            labs: labs,
+            reservedCount: reservedCount,
+            vacantCount: vacantCount,
+            timeSlots: timeSlots
+        });
+
+    } catch (error) {
+        console.error('Error updating seat displays:', error);
+        resp.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
 
 // Main page2 (student view)
 server.get('/main2', async function(req, resp){
@@ -342,7 +561,7 @@ server.get('/main2', async function(req, resp){
     
     try {
         // Fetch reservation counts
-        const result = await collection_reservation2.aggregate([
+        const result = await seatDisplays.aggregate([
             { $match: { status: "reserved" } }, // Filter documents where status is "reserved"
             { $group: { _id: null, count: { $sum: 1 } } } // Count the filtered documents
         ]).exec();
@@ -359,8 +578,21 @@ server.get('/main2', async function(req, resp){
             day: 'numeric' 
         });
 
+        const timeSlots = [
+            "09:00 - 09:30 AM",
+            "09:30 - 10:00 AM",
+            "10:00 - 10:30 AM",
+            "10:30 - 11:00 AM",
+            "11:00 - 11:30 AM",
+            "11:30 - 12:00 PM",
+            "12:00 - 12:30 PM",
+            "12:30 - 01:00 PM",
+            "01:00 - 01:30 PM",
+            "01:30 - 02:00 PM"
+        ];
+
         // Fetch reservations
-        const post_reservations = await collection_reservation2.find(searchQuery).lean();
+        const post_reservations = await seatDisplays.find(searchQuery).lean();
         const labs = await collection_lab.find(searchQuery).lean();
 
         // Render the main page with counts and reservations
@@ -371,7 +603,8 @@ server.get('/main2', async function(req, resp){
             currentDate: currentDate,
             labs: labs, // Pass the lab data to the template
             reservedCount: reservedCount,
-            vacantCount: vacantCount
+            vacantCount: vacantCount,
+            timeSlots: timeSlots
         });
     } catch (error) {
         console.error('Error rendering main page:', error);
@@ -387,7 +620,7 @@ server.get('/main3', async function(req, resp){
     
     try {
         // Fetch reservation counts
-        const result = await collection_reservation3.aggregate([
+        const result = await seatDisplays.aggregate([
             { $match: { status: "reserved" } }, // Filter documents where status is "reserved"
             { $group: { _id: null, count: { $sum: 1 } } } // Count the filtered documents
         ]).exec();
@@ -404,8 +637,21 @@ server.get('/main3', async function(req, resp){
             day: 'numeric' 
         });
 
+        const timeSlots = [
+            "09:00 - 09:30 AM",
+            "09:30 - 10:00 AM",
+            "10:00 - 10:30 AM",
+            "10:30 - 11:00 AM",
+            "11:00 - 11:30 AM",
+            "11:30 - 12:00 PM",
+            "12:00 - 12:30 PM",
+            "12:30 - 01:00 PM",
+            "01:00 - 01:30 PM",
+            "01:30 - 02:00 PM"
+        ];
+
         // Fetch reservations
-        const post_reservations = await collection_reservation3.find(searchQuery).lean();
+        const post_reservations = await seatDisplays.find(searchQuery).lean();
         const labs = await collection_lab.find(searchQuery).lean();
 
         // Render the main page with counts and reservations
@@ -416,7 +662,8 @@ server.get('/main3', async function(req, resp){
             currentDate: currentDate,
             labs: labs, // Pass the lab data to the template
             reservedCount: reservedCount,
-            vacantCount: vacantCount
+            vacantCount: vacantCount,
+            timeSlots: timeSlots
         });
     } catch (error) {
         console.error('Error rendering main page:', error);
@@ -432,7 +679,7 @@ server.get('/main4', async function(req, resp){
     
     try {
         // Fetch reservation counts
-        const result = await collection_reservation4.aggregate([
+        const result = await seatDisplays.aggregate([
             { $match: { status: "reserved" } }, // Filter documents where status is "reserved"
             { $group: { _id: null, count: { $sum: 1 } } } // Count the filtered documents
         ]).exec();
@@ -449,8 +696,21 @@ server.get('/main4', async function(req, resp){
             day: 'numeric' 
         });
 
+        const timeSlots = [
+            "09:00 - 09:30 AM",
+            "09:30 - 10:00 AM",
+            "10:00 - 10:30 AM",
+            "10:30 - 11:00 AM",
+            "11:00 - 11:30 AM",
+            "11:30 - 12:00 PM",
+            "12:00 - 12:30 PM",
+            "12:30 - 01:00 PM",
+            "01:00 - 01:30 PM",
+            "01:30 - 02:00 PM"
+        ];
+
         // Fetch reservations
-        const post_reservations = await collection_reservation4.find(searchQuery).lean();
+        const post_reservations = await seatDisplays.find(searchQuery).lean();
         const labs = await collection_lab.find(searchQuery).lean();
 
         // Render the main page with counts and reservations
@@ -461,7 +721,8 @@ server.get('/main4', async function(req, resp){
             currentDate: currentDate,
             labs: labs, // Pass the lab data to the template
             reservedCount: reservedCount,
-            vacantCount: vacantCount
+            vacantCount: vacantCount,
+            timeSlots: timeSlots
         });
     } catch (error) {
         console.error('Error rendering main page:', error);
@@ -477,7 +738,7 @@ server.get('/main5', async function(req, resp){
     
     try {
         // Fetch reservation counts
-        const result = await collection_reservation5.aggregate([
+        const result = await seatDisplays.aggregate([
             { $match: { status: "reserved" } }, // Filter documents where status is "reserved"
             { $group: { _id: null, count: { $sum: 1 } } } // Count the filtered documents
         ]).exec();
@@ -494,8 +755,21 @@ server.get('/main5', async function(req, resp){
             day: 'numeric' 
         });
 
+        const timeSlots = [
+            "09:00 - 09:30 AM",
+            "09:30 - 10:00 AM",
+            "10:00 - 10:30 AM",
+            "10:30 - 11:00 AM",
+            "11:00 - 11:30 AM",
+            "11:30 - 12:00 PM",
+            "12:00 - 12:30 PM",
+            "12:30 - 01:00 PM",
+            "01:00 - 01:30 PM",
+            "01:30 - 02:00 PM"
+        ];
+
         // Fetch reservations
-        const post_reservations = await collection_reservation5.find(searchQuery).lean();
+        const post_reservations = await seatDisplays.find(searchQuery).lean();
         const labs = await collection_lab.find(searchQuery).lean();
 
         // Render the main page with counts and reservations
@@ -506,7 +780,8 @@ server.get('/main5', async function(req, resp){
             currentDate: currentDate,
             labs: labs, // Pass the lab data to the template
             reservedCount: reservedCount,
-            vacantCount: vacantCount
+            vacantCount: vacantCount,
+            timeSlots: timeSlots
         });
     } catch (error) {
         console.error('Error rendering main page:', error);

@@ -12,3 +12,7 @@ function submitForm() {
     return true; // Submit the form
 }
 
+function changeColor(button) {
+    const timeSlot = button.parentNode; // Get the parent div with class 'time-slot'
+    timeSlot.style.backgroundColor = 'green'; // Set the background color to green
+}

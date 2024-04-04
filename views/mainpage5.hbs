@@ -49,7 +49,7 @@
                         <h1 id="currentDate">{{ currentDate }}</h1>
                     </div>
                     <div>
-                        <h2 id="current-lab">Current Lab: Lab 5</h2>
+                        <h2 id="labnum" value="5">Current Lab: Lab 5</h2>
                     </div>
                 </div>
 
@@ -115,54 +115,49 @@
                         <h2 id="timeslot-title"> Time Slots </h2>
                         <div class="time-slots verti-scroll">
                             <div class="time-sec">
-                                <div class="time-slot">
-                                    <label>9:00 - 9:30 AM</label>
+                                <div class="time-slot" data-time="09:00 - 9:30 AM">
+                                    <button class="time-button" onclick="selectTime('09:00 - 9:30 AM', '5')">09:00 - 9:30 AM</button>
                                 </div>
-                                <div class="time-slot">
-                                    <label>09:30 - 10:00 AM</label>
-                                </div>
-                            </div>
-                            <div class="time-sec">
-                                <div class="time-slot">
-                                    <label>10:00 - 10:30 AM</label>
-                                </div>
-                                <div class="time-slot">
-                                    <label>10:30 - 11:00 AM</label>
+                                <div class="time-slot" data-time="09:30 - 10:00 AM">
+                                    <button class="time-button" onclick="selectTime('09:30 - 10:00 AM', '5')">09:30 - 10:00 AM</button>
                                 </div>
                             </div>
                             <div class="time-sec">
-                                <div class="time-slot">
-                                    <label>11:00 - 11:30 AM</label>
+                                <div class="time-slot" data-time="10:00 - 10:30 AM">
+                                    <button class="time-button" onclick="selectTime('10:00 - 10:30 AM', '5')">10:00 - 10:30 AM</button>
                                 </div>
-                                <div class="time-slot">
-                                    <label>11:30 - 12:00 PM</label>
-                                </div>
-                            </div>
-                            <div class="time-sec">
-                                <div class="time-slot">
-                                    <label>12:00 - 12:30 PM</label>
-                                </div>
-                                <div class="time-slot">
-                                    <label>12:30 - 01:00 PM</label>
+                                <div class="time-slot" data-time="10:30 - 11:00 AM">
+                                    <button class="time-button" onclick="selectTime('10:30 - 11:00 AM', '5')">10:30 - 11:00 AM</button>
                                 </div>
                             </div>
                             <div class="time-sec">
-                                <div class="time-slot">
-                                    <label>01:00 - 01:30 PM</label>
+                                <div class="time-slot" data-time="11:00 - 11:30 AM">
+                                    <button class="time-button" onclick="selectTime('11:00 - 11:30 AM', '5')">11:00 - 11:30 AM</button>
                                 </div>
-                                <div class="time-slot">
-                                    <label>01:30 - 02:00 PM</label>
+                                <div class="time-slot" data-time="11:30 - 12:00 PM">
+                                    <button class="time-button" onclick="selectTime('11:30 - 12:00 PM', '5')">11:30 - 12:00 PM</button>
                                 </div>
                             </div>
-                        
+                            <div class="time-sec">
+                                <div class="time-slot" data-time="12:00 - 12:30 PM">
+                                    <button class="time-button" onclick="selectTime('12:00 - 12:30 PM', '5')">12:00 - 12:30 PM</button>
+                                </div>
+                                <div class="time-slot" data-time="12:30 - 01:00 PM">
+                                    <button class="time-button" onclick="selectTime('12:30 - 01:00 PM', '5')">12:30 - 01:00 PM</button>
+                                </div>
+                            </div>
+                            <div class="time-sec">
+                                <div class="time-slot" data-time="01:00 - 01:30 PM">
+                                    <button class="time-button" onclick="selectTime('01:00 - 01:30 PM', '5')">01:00 - 01:30 PM</button>
+                                </div>
+                                <div class="time-slot" data-time="01:30 - 02:00 PM">
+                                    <button class="time-button" onclick="selectTime('01:30 - 02:00 PM', '5')">01:30 - 02:00 PM</button>
+                                </div>
+                            </div>
                         </div>
-                        
                     </div>
-                    
                     <br>
-                    
-                </div>
-
+            </div>
                 <div class="seats">
                     <div class="table-container">
                         <div class="row">
@@ -189,16 +184,17 @@
                     </p>
                 </div>
                 <div class="form-container">
-                    <form id="reservation-form">
+                    <form id="reservation-form" action="/main5" method="POST" onsubmit="return submitForm()">
+                        <input type="hidden" name="action" value="reserve">
                         <label for="name">Name:</label>
-                        <input type="text" id="name" name="name" required>
+                        <input type="text" id="name" name="name" placeholder="Name" required>
 
-                        <label for="time">Select a Time:</label>
-                        <select id="time" name="time" required>
+                        <label for="slotreserverd">Select a Time:</label>
+                        <select id="slotreserverd" name="slotreserverd" required>
                             <option value="">Select a Time Slot</option>
-                            {{!-- {{#each}} --}}
-                                <option value="1">1</option>
-                            {{!--{{/each}} --}}
+                            {{#each timeSlots}}
+                                <option value="{{this}}">{{this}}</option>
+                            {{/each}}
                         </select>
 
                         <label for="seat">Select a Seat:</label>
@@ -211,6 +207,7 @@
                             {{/if}}
                             {{/each}}
                         </select>
+                        <input type="hidden" id="selected-seat" name="seatnum">
             
                         <button type="submit" class="button">Reserve</button>
                     </form>
@@ -233,6 +230,49 @@
         </div>
     </div>
 
+<script>
+    // JavaScript to update the hidden input field with selected seatnum
+    document.getElementById('seat').addEventListener('change', function() {
+        const selectedSeat = this.value;
+        document.getElementById('selected-seat').value = selectedSeat;
+    });
 
-<script src="../public/mainscript.js">
+     // Function to handle time slot selection
+    async function selectTime(selectedTime,selectedLab) {
+    try {
+        // Remove background color from all buttons
+        console.log(selectedLab);
+        var buttons = document.querySelectorAll('.time-button');
+        buttons.forEach(function(button) {
+            button.style.backgroundColor = '';
+        });
+        
+        // Change background color of the selected button to green
+        var selectedButton = document.querySelector('.time-button[data-time="' + selectedTime + '"]');
+        if (selectedButton) {
+            selectedButton.style.backgroundColor = 'green';
+        }
+
+        document.getElementById("slotreserverd").value = selectedTime;
+        document.getElementById("labnum").value = selectedLab;
+        
+        // Send request to backend to update seatDisplays
+        const response = await fetch('/updateSeatDisplays', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ slotreserverd: selectedTime, labnum: selectedLab })
+        });
+        if (response.ok) {
+            window.location.reload();
+        }
+        
+
+        
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 </script>
+
