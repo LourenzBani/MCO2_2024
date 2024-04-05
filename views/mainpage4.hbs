@@ -49,7 +49,7 @@
                         <h1 id="currentDate">{{ currentDate }}</h1>
                     </div>
                     <div>
-                        <h2 id="labnum" value="4">Current Lab: Lab 4</h2>
+                        <h2 id="labnum" value="1">Current Lab: Lab 4</h2>
                     </div>
                 </div>
 
@@ -80,15 +80,14 @@
                 <br>
                 <div class="dropdown" id="mDropdown">
                     <button class="button dropbtn"><i class="fa-solid fa-computer"></i></button>
-                
                 </div>
     
                 
-                <form action="/main4" method="post">
+                <form action="/main" method="post">
                 <input type="hidden" name="action" value="prevPage">
                 <button class="button" action="prevPage"><i class="fa-solid fa-chevron-left"></i> </button>
                 </form>
-                 <form action="/main4" method="post">
+                 <form action="/main" method="post">
                 <input type="hidden" name="action" value="nextPage">
                 <button class="button" action="nextPage"><i class="fa-solid fa-chevron-right"></i> </button>
                 </form>
@@ -114,42 +113,42 @@
                         <div class="time-slots verti-scroll">
                             <div class="time-sec">
                                 <div class="time-slot" data-time="09:00 - 9:30 AM">
-                                    <button class="time-button" onclick="selectTime('09:00 - 9:30 AM', '4')">09:00 - 9:30 AM</button>
+                                    <button class="time-button" onclick="selectTime('09:00 - 9:30 AM', '1')">09:00 - 9:30 AM</button>
                                 </div>
                                 <div class="time-slot" data-time="09:30 - 10:00 AM">
-                                    <button class="time-button" onclick="selectTime('09:30 - 10:00 AM', '4')">09:30 - 10:00 AM</button>
+                                    <button class="time-button" onclick="selectTime('09:30 - 10:00 AM', '1')">09:30 - 10:00 AM</button>
                                 </div>
                             </div>
                             <div class="time-sec">
                                 <div class="time-slot" data-time="10:00 - 10:30 AM">
-                                    <button class="time-button" onclick="selectTime('10:00 - 10:30 AM', '4')">10:00 - 10:30 AM</button>
+                                    <button class="time-button" onclick="selectTime('10:00 - 10:30 AM', '1')">10:00 - 10:30 AM</button>
                                 </div>
                                 <div class="time-slot" data-time="10:30 - 11:00 AM">
-                                    <button class="time-button" onclick="selectTime('10:30 - 11:00 AM', '4')">10:30 - 11:00 AM</button>
+                                    <button class="time-button" onclick="selectTime('10:30 - 11:00 AM', '1')">10:30 - 11:00 AM</button>
                                 </div>
                             </div>
                             <div class="time-sec">
                                 <div class="time-slot" data-time="11:00 - 11:30 AM">
-                                    <button class="time-button" onclick="selectTime('11:00 - 11:30 AM', '4')">11:00 - 11:30 AM</button>
+                                    <button class="time-button" onclick="selectTime('11:00 - 11:30 AM', '1')">11:00 - 11:30 AM</button>
                                 </div>
                                 <div class="time-slot" data-time="11:30 - 12:00 PM">
-                                    <button class="time-button" onclick="selectTime('11:30 - 12:00 PM', '4')">11:30 - 12:00 PM</button>
+                                    <button class="time-button" onclick="selectTime('11:30 - 12:00 PM', '1')">11:30 - 12:00 PM</button>
                                 </div>
                             </div>
                             <div class="time-sec">
                                 <div class="time-slot" data-time="12:00 - 12:30 PM">
-                                    <button class="time-button" onclick="selectTime('12:00 - 12:30 PM', '4')">12:00 - 12:30 PM</button>
+                                    <button class="time-button" onclick="selectTime('12:00 - 12:30 PM', '1')">12:00 - 12:30 PM</button>
                                 </div>
                                 <div class="time-slot" data-time="12:30 - 01:00 PM">
-                                    <button class="time-button" onclick="selectTime('12:30 - 01:00 PM', '4')">12:30 - 01:00 PM</button>
+                                    <button class="time-button" onclick="selectTime('12:30 - 01:00 PM', '1')">12:30 - 01:00 PM</button>
                                 </div>
                             </div>
                             <div class="time-sec">
                                 <div class="time-slot" data-time="01:00 - 01:30 PM">
-                                    <button class="time-button" onclick="selectTime('01:00 - 01:30 PM', '4')">01:00 - 01:30 PM</button>
+                                    <button class="time-button" onclick="selectTime('01:00 - 01:30 PM', '1')">01:00 - 01:30 PM</button>
                                 </div>
                                 <div class="time-slot" data-time="01:30 - 02:00 PM">
-                                    <button class="time-button" onclick="selectTime('01:30 - 02:00 PM', '4')">01:30 - 02:00 PM</button>
+                                    <button class="time-button" onclick="selectTime('01:30 - 02:00 PM', '1')">01:30 - 02:00 PM</button>
                                 </div>
                             </div>
                         </div>
@@ -164,7 +163,7 @@
                         
                         <div class="row">
                             {{#each reservation}}
-                            <div class="col {{status}}">{{seatnum}}</div>
+                            <div class="col {{status}}" data-reservedby="{{reservedby}}" name="seatnum">{{seatnum}}</div>
                             {{/each}}
                         </div>
 
@@ -182,9 +181,9 @@
                     </p>
                 </div>
                 <div class="form-container">
-                    <form id="reservation-form" action="/main4" method="POST" onsubmit="return submitForm()">
+                    <form id="reservation-form" action="/main" method="POST" onsubmit="return submitForm()">
                         <input type="hidden" name="action" value="reserve">
-                       
+
 
                         <label for="slotreserverd">Select a Time:</label>
                         <select id="slotreserverd" name="slotreserverd" required>
@@ -207,7 +206,7 @@
 
                         <input type="hidden" id="selected-seat" name="seatnum">
                         
-                        <p>Chosen Day:</p>
+                        <p>Chosen Date:</p>
                         <input type="date" id="selectedDateInput" name="selectedDateInput" value="">
                             <br><br>
 
@@ -234,6 +233,28 @@
     </div>
 
 <script>
+
+        // JavaScript to show reservedby data on hover
+document.addEventListener('DOMContentLoaded', function() {
+    const seats = document.querySelectorAll('.seats .col');
+
+    seats.forEach(seat => {
+        seat.addEventListener('mouseover', function() {
+            const reservedBy = seat.getAttribute('data-reservedby');
+            if (reservedBy) {
+                // Set reservedBy value as title attribute (tooltip)
+                seat.setAttribute('title', reservedBy);
+            }
+        });
+
+        seat.addEventListener('mouseout', function() {
+            // Remove title attribute when mouse leaves the seat
+            seat.removeAttribute('title');
+        });
+    });
+});
+
+
     // Get the current date
     const currentDate = new Date();
 
@@ -319,11 +340,13 @@
                 const reservation = seatData.find(res => res.seatnum === seatnum);
                 if (reservation) {
                     seat.className = 'col ' + reservation.status;
+                    seat.setAttribute('data-reservedby', reservation.reservedby);
                     if (reservation.status === "vacant") {
                         vacantCount++;
                     } else if (reservation.status === "reserved") {
-                        reservedCount++;
+                        reservedCount++;        
                     }
+                
                 } else {
                     seat.className = 'col vacant';
                     vacantCount++;
