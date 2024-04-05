@@ -19,7 +19,19 @@ const signupSchema = new mongoose.Schema({
     },
     phone: {
         type: String,
-        required: true
+        
+    },
+    department: {
+        type: String
+       
+    },
+    address: {
+        type: String
+        
+    },
+    birthdate: {
+        type: Date
+       
     }
 });
 

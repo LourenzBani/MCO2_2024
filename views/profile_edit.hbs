@@ -36,9 +36,65 @@
             <div class="buttons">
                 <table>
                     <tr><a href="/profile"><button type="button" id="savebtn">Save Changes</button></a> </tr>
-                    <tr><a href="/profile"><button type="button" id="savebtn">Back</button></a> </tr>
+                    <tr><a href="/profile"><button type="button" id="backbtn">Back</button></a> </tr>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const saveBtn = document.getElementById('savebtn');
+
+    saveBtn.addEventListener('click', async function() {
+        try {
+            // Get updated values from input fields
+            const newName = document.getElementById('name').value;
+            const newEmail = document.getElementById('email').value;
+            const newPhone = document.getElementById('phone').value;
+            const newDept = document.getElementById('dept').value;
+            const newAddress = document.getElementById('address').value;
+            
+            // Get the raw date value
+            const rawDate = document.getElementById('bday').value;
+            
+            // Extract day, month, and year components
+            const [year, month, day] = rawDate.split('-');
+
+            // Format the date as yyyy-mm-dd
+            const formattedDate = `${year}-${month}-${day}`;
+
+            // Send updated user information to the backend
+            const response = await fetch('/updateUser', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    newName,
+                    newEmail,
+                    newPhone,
+                    newDept,
+                    newAddress,
+                    newBday: formattedDate
+                })
+            });
+
+            if (response.ok) {
+                // User information updated successfully
+                alert('User information updated successfully');
+                // Redirect to profile page or perform any other action as needed
+                window.location.href = '/profile';
+            } else {
+                // Handle errors if any
+                alert('Failed to update user information');
+            }
+        } catch (error) {
+            console.error('Error updating user information:', error);
+            alert('An error occurred while updating user information');
+        }
+    });
+});
+
+</script>

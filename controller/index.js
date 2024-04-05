@@ -7,7 +7,6 @@ const Handler = require('handlebars')
 const mongoose = require('mongoose');
 
 const collection_user = require('../model/user');
-const collection_date = require('../model/date');
 const seatDisplays = require('../model/seatDisplay');
 const collection_reservation = require('../model/reservation');
 
@@ -79,7 +78,6 @@ server.post("/", async (req, res) => {
             email: req.body.email,
             password: req.body.password,
             acctype: req.body.acctype,
-            phone: req.body.phone
         };
 
         const existUser = await collection_user.findOne({email: data.email});
@@ -814,9 +812,13 @@ server.delete('/reservation/:id', async (req, res) => {
     }
 });
 
+
+
 // profile page 
 server.get('/profile', async (req, res) => {
     try {
+
+        
         // Retrieve the user's _id from the session
         const userId = req.session.user._id;
 
@@ -853,6 +855,48 @@ server.get('/profile_edit', function(req, resp){
     });
 });
 
+// Route to handle updating user information
+server.post('/updateUser', async (req, res) => {
+    try {
+        // Extract updated user information from the request body
+        const { newName, newEmail, newPhone, newDept, newAddress, newBday } = req.body;
+
+        // Parse newBday as a Date object
+        const parsedBday = new Date(newBday);
+
+        // Extract only the date part from parsedBday
+        const parsedBdayDateOnly = new Date(parsedBday.getFullYear(), parsedBday.getMonth(), parsedBday.getDate());
+
+        // Find the user by their email (assuming email is unique)
+        const user = await collection_user.findOne({ email: newEmail });
+
+        // If user is found, update their information
+        if (user) {
+            user.name = newName;
+            user.email = newEmail;
+            user.phone = newPhone;
+            user.department = newDept;
+            user.address = newAddress;
+            user.birthdate = parsedBdayDateOnly;
+
+            // Save the updated user information to the database
+            await user.save();
+
+            // Reload the user session data
+            req.session.user = user.toObject(); // Convert user to plain JavaScript object
+
+            // Respond with a success message
+            res.status(200).json({ message: 'User information updated successfully' });
+        } else {
+            // If user is not found, respond with an error message
+            res.status(404).json({ error: 'User not found' });
+        }
+    } catch (error) {
+        // If an error occurs, respond with an error message
+        console.error('Error updating user:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 
 const port = process.env.PORT || 3000;
