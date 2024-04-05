@@ -183,6 +183,8 @@
                 </div>
                 <div class="form-container">
                     <form id="reservation-form" action="/main" method="POST" onsubmit="return submitForm()">
+                        <input type="hidden" name="action" value="reserve">
+
 
                         <label for="slotreserverd">Select a Time:</label>
                         <select id="slotreserverd" name="slotreserverd" required>
@@ -202,6 +204,7 @@
                             {{/if}}
                             {{/each}}
                         </select>
+
                         <input type="hidden" id="selected-seat" name="seatnum">
                         
                         <p>Chosen Day:</p>

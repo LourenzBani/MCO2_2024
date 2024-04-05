@@ -182,7 +182,9 @@
                     </p>
                 </div>
                 <div class="form-container">
-                    <form id="reservation-form" action="/main3" method="POST" onsubmit="return submitForm()">                  
+                    <form id="reservation-form" action="/main3" method="POST" onsubmit="return submitForm()">
+                        <input type="hidden" name="action" value="reserve">
+                      
 
                         <label for="slotreserverd">Select a Time:</label>
                         <select id="slotreserverd" name="slotreserverd" required>
