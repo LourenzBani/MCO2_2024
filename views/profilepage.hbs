@@ -1,10 +1,12 @@
 <div class="container">
     <div class="left-panel">
-        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png " id="profile-icon"/>
-        <h4 id="account-name"> {{user.name}} </h4>
-        <p id="account-type"> {{user.acctype}} </p>
+        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" id="profile-icon"/>
+        <h4 id="account-name">{{user.name}}</h4>
+        <p id="account-type">{{user.acctype}}</p>
         <a href="/profile_edit"><button type="button" id="edit-btn">Edit Personal Details</button></a>
-        <a href="/main"><button type="button" id="delete-btn">Delete Account</button></a>
+        <form id="delete-form" action="/deleteUser" method="POST">
+            <button type="submit" id="delete-btn">Delete Account</button>
+        </form>
         <a href="/main"><button type="button" id="back-btn">Back to Home</button></a>
     </div>
     <div class="right-panel">
@@ -44,3 +46,21 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteForm = document.getElementById('delete-form');
+
+        deleteForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Confirm deletion before submitting the form
+            const confirmDelete = confirm('Are you sure you want to delete your account? This action cannot be undone.');
+
+            if (confirmDelete) {
+                // Submit the form
+                deleteForm.submit();
+            }
+        });
+    });
+</script>

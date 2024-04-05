@@ -898,6 +898,43 @@ server.post('/updateUser', async (req, res) => {
     }
 });
 
+// Route to handle deleting user account and associated reservations
+server.post('/deleteUser', async (req, res) => {
+    try {
+        // Retrieve the user's _id from the session
+        const userId = req.session.user._id;
+
+        // Find the user by their _id
+        const user = await collection_user.findOne({ _id: userId });
+
+        // Check if user exists
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Warn the user before deleting the account
+        // This step can be implemented in frontend to confirm the deletion
+        
+        // Delete the user's reservations
+        await collection_reservation.deleteMany({ reservedbyid: userId });
+
+        // Delete the user's account
+        await collection_user.deleteOne({ _id: userId });
+
+      
+
+        // Clear the session to logout the user
+        req.session.destroy();
+        res.redirect('/');
+
+       
+    } catch (error) {
+        // If an error occurs, respond with an error message
+        console.error('Error deleting user account:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 
 const port = process.env.PORT || 3000;
 server.listen(port, function(){
