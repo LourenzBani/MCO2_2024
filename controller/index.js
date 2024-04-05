@@ -10,10 +10,6 @@ const collection_user = require('../model/user');
 const collection_date = require('../model/date');
 const seatDisplays = require('../model/seatDisplay');
 const collection_reservation = require('../model/reservation');
-const collection_reservation2 = require('../model/tworeservation');
-const collection_reservation3 = require('../model/threereservation');
-const collection_reservation4 = require('../model/fourreservation');
-const collection_reservation5 = require('../model/fivereservation');
 
 const collection_lab = require('../model/reservation');
 

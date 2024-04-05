@@ -93,10 +93,6 @@
                     </div>
                 </div>
     
-                <button id="calendarButton" class="button"><i class="fa-solid fa-calendar-days"></i> Go to Date</button>
-                <div id="calendarPopup" class="calendar-popup">
-                    <input type="date" id="selectedDate">
-                </div>
                 
                 <form action="/main" method="post">
                 <input type="hidden" name="action" value="prevPage">
@@ -106,6 +102,17 @@
                 <input type="hidden" name="action" value="nextPage">
                 <button class="button" action="nextPage"><i class="fa-solid fa-chevron-right"></i> </button>
                 </form>
+
+                <div class="dropdown" id="myDropdown">
+                    <label for="selectedDate">Select Date:</label>
+                    <select id="selectedDate">
+                        <!-- Options will be dynamically generated here -->
+                    </select>
+                </div>
+                <div>
+                    <label for="selectedTime">Selected Time Slot:</label>
+                    <span id="selectedTime"></span>
+                </div>
                 
             </div>
 
@@ -231,6 +238,29 @@
     </div>
 
 <script>
+    // Get the current date
+    const currentDate = new Date();
+
+    // Function to format date as YYYY-MM-DD
+    const formatDate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    // Populate dropdown with dates for the next 7 days
+    const dropdown = document.getElementById('selectedDate');
+    for (let i = 0; i < 7; i++) {
+        const date = new Date(currentDate);
+        date.setDate(currentDate.getDate() + i);
+        const option = document.createElement('option');
+        option.value = formatDate(date);
+        option.textContent = formatDate(date);
+        dropdown.appendChild(option);
+    }
+
+
     // JavaScript to update the hidden input field with selected seatnum
     document.getElementById('seat').addEventListener('change', function() {
         const selectedSeat = this.value;
@@ -238,24 +268,26 @@
     });
 
      // Function to handle time slot selection
-    async function selectTime(selectedTime,selectedLab) {
-    try {
-        // Remove background color from all buttons
-        console.log(selectedLab);
-        var buttons = document.querySelectorAll('.time-button');
-        buttons.forEach(function(button) {
-            button.style.backgroundColor = '';
+        async function selectTime(selectedTime, selectedLab) {
+        try {
+        // Remove background color from all time-slots
+        var timeSlots = document.querySelectorAll('.time-slot');
+        timeSlots.forEach(function (slot) {
+            slot.style.backgroundColor = ''; // Reset background color
         });
-        
-        // Change background color of the selected button to green
+
+        // Change background color of the parent .time-slot
         var selectedButton = document.querySelector('.time-button[data-time="' + selectedTime + '"]');
         if (selectedButton) {
-            selectedButton.style.backgroundColor = 'green';
+            var selectedSlot = selectedButton.parentElement;
+            if (selectedSlot) {
+                selectedSlot.style.backgroundColor = 'green';
+            }
         }
 
         document.getElementById("slotreserverd").value = selectedTime;
         document.getElementById("labnum").value = selectedLab;
-        
+
         // Send request to backend to update seatDisplays
         const response = await fetch('/updateSeatDisplays', {
             method: 'POST',
@@ -267,9 +299,7 @@
         if (response.ok) {
             window.location.reload();
         }
-        
 
-        
     } catch (error) {
         console.error('Error:', error);
     }

@@ -303,6 +303,10 @@ body{
     width: 100%;
 }
 
+.time-slot.selected {
+    background-color: green;
+}
+
 .green {
     background-color: green !important; /* Override background color */
 }

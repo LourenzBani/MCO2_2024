@@ -93,9 +93,11 @@
                     </div>
                 </div>
     
-                <button id="calendarButton" class="button"><i class="fa-solid fa-calendar-days"></i> Go to Date</button>
-                <div id="calendarPopup" class="calendar-popup">
-                    <input type="date" id="selectedDate">
+                <div>
+                    <label for="selectedDate">Select Date:</label>
+                    <select id="selectedDate">
+                        <!-- Options will be dynamically generated here -->
+                    </select>
                 </div>
                 
                 <form action="/main2" method="post">
@@ -231,6 +233,30 @@
     </div>
 
 <script>
+
+        // Get the current date
+    const currentDate = new Date();
+
+    // Function to format date as YYYY-MM-DD
+    const formatDate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    // Populate dropdown with dates for the next 7 days
+    const dropdown = document.getElementById('selectedDate');
+    for (let i = 0; i < 7; i++) {
+        const date = new Date(currentDate);
+        date.setDate(currentDate.getDate() + i);
+        const option = document.createElement('option');
+        option.value = formatDate(date);
+        option.textContent = formatDate(date);
+        dropdown.appendChild(option);
+    }
+
+
     // JavaScript to update the hidden input field with selected seatnum
     document.getElementById('seat').addEventListener('change', function() {
         const selectedSeat = this.value;
