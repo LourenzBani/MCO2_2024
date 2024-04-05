@@ -53,16 +53,22 @@
                     </div>
                 </div>
 
-                <div class="current-info-availability">
+               <div class="current-info-availability">
                     <div class="availability" id="avail">
                         <div class="icon-name-style status-icons" id="number">
-                            <img id="green-dot" src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Basic_green_dot.png"> <div class="icon-padding">{{ vacantCount }}</div>
+                            <img id="green-dot" src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Basic_green_dot.png">
+                            <div class="icon-padding">
+                                <span id="number-vacant">{{ vacantCount }}</span>
+                            </div>
                         </div>
                         Vacant
                     </div>
                     <div class="availability" id="reserved">
                         <div class="icon-name-style status-icons" id="number">
-                            <img id="red-dot" src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Basic_red_dot.png"> <div class="icon-padding">{{ reservedCount }}</div>
+                            <img id="red-dot" src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Basic_red_dot.png">
+                            <div class="icon-padding">
+                                <span id="number-reserved">{{ reservedCount }}</span>
+                            </div>
                         </div>
                         Reserved
                     </div>
@@ -74,29 +80,9 @@
                 <br>
                 <div class="dropdown" id="myDropdown">
                     <button class="button dropbtn"><i class="fa-solid fa-computer"></i> Go to Lab</button>
-                    <div class="dropdown-content">
-                            <a href="#" >
-                                <p>labnum #1</p>
-                            </a>
-                             <a href="#">
-                                <p>labnum #2</p>
-                            </a>
-                             <a href="#" >
-                                <p>labnum #3</p>
-                            </a>
-                             <a href="#">
-                                <p>labnum #4</p>
-                            </a>
-                             <a href="#" >
-                                <p>labnum #5</p>
-                            </a>
-                    </div>
+                
                 </div>
     
-                <button id="calendarButton" class="button"><i class="fa-solid fa-calendar-days"></i> Go to Date</button>
-                <div id="calendarPopup" class="calendar-popup">
-                    <input type="date" id="selectedDate">
-                </div>
                 
                 <form action="/main5" method="post">
                 <input type="hidden" name="action" value="prevPage">
@@ -106,6 +92,18 @@
                 <input type="hidden" name="action" value="nextPage">
                 <button class="button" action="nextPage"><i class="fa-solid fa-chevron-right"></i> </button>
                 </form>
+
+                <div class="dropdown" id="myDropdown">
+                    <label for="selectedDate">Select Date:</label>
+                    <select id="selectedDate">
+                        <!-- Options will be dynamically generated here -->
+                    </select>
+                </div>
+
+                <div>
+                    <label for="selectedTime">Selected Time Slot:</label>
+                    <span id="selectedTimeDisplay"></span>
+                </div>
                 
             </div>
 
@@ -207,7 +205,9 @@
                             {{/if}}
                             {{/each}}
                         </select>
+
                         <input type="hidden" id="selected-seat" name="seatnum">
+                        <input type="date" id="selectedDateInput" name="selectedDateInput" value="">
             
                         <button type="submit" class="button">Reserve</button>
                     </form>
@@ -231,48 +231,111 @@
     </div>
 
 <script>
+    // Get the current date
+    const currentDate = new Date();
+
+    // Function to format date as YYYY-MM-DD
+    const formatDate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    // Populate dropdown with dates for the next 7 days
+    const dropdown = document.getElementById('selectedDate');
+    for (let i = 0; i < 7; i++) {
+        const date = new Date(currentDate);
+        date.setDate(currentDate.getDate() + i);
+        const option = document.createElement('option');
+        option.value = formatDate(date);
+        option.textContent = formatDate(date);
+        dropdown.appendChild(option);
+    }
+    // Get the selected date from the dropdown
+    const selectedDateElement = document.getElementById("selectedDate");
+    const selectedDate = selectedDateElement.value;
+
+    // Set the selected date value to the hidden input field
+    document.getElementById("selectedDateInput").value = selectedDate;
+
+    
+
+
     // JavaScript to update the hidden input field with selected seatnum
     document.getElementById('seat').addEventListener('change', function() {
         const selectedSeat = this.value;
         document.getElementById('selected-seat').value = selectedSeat;
     });
 
-     // Function to handle time slot selection
-    async function selectTime(selectedTime,selectedLab) {
+     async function selectTime(selectedTime, selectedLab) {
     try {
-        // Remove background color from all buttons
-        console.log(selectedLab);
-        var buttons = document.querySelectorAll('.time-button');
-        buttons.forEach(function(button) {
-            button.style.backgroundColor = '';
+        // Remove background color from all time-slots
+        var timeSlots = document.querySelectorAll('.time-slot');
+        timeSlots.forEach(function (slot) {
+            slot.style.backgroundColor = ''; // Reset background color
         });
-        
-        // Change background color of the selected button to green
+
+        // Change background color of the parent .time-slot
         var selectedButton = document.querySelector('.time-button[data-time="' + selectedTime + '"]');
         if (selectedButton) {
-            selectedButton.style.backgroundColor = 'green';
+            var selectedSlot = selectedButton.parentElement;
+            if (selectedSlot) {
+                selectedSlot.style.backgroundColor = 'green';
+            }
         }
+        // Get the selected date element
+        var selectedDateElement = document.getElementById("selectedDate");
+
+        // Get the selected date value
+        var selectedDate = selectedDateElement.value;
+
+        // Now you have the selected date in the selectedDate variable
+        console.log("Selected Date:", selectedDate);
 
         document.getElementById("slotreserverd").value = selectedTime;
         document.getElementById("labnum").value = selectedLab;
-        
+        document.getElementById("selectedTimeDisplay").textContent = selectedTime;
+
         // Send request to backend to update seatDisplays
         const response = await fetch('/updateSeatDisplays', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ slotreserverd: selectedTime, labnum: selectedLab })
+            body: JSON.stringify({ slotreserverd: selectedTime, labnum: selectedLab, selectedDate: selectedDate })
         });
         if (response.ok) {
-            window.location.reload();
-        }
-        
+            // Update seat class based on the response
+            const seatData = await response.json();
+            const seats = document.querySelectorAll('.seats .col');
+            let vacantCount = 0;
+            let reservedCount = 0;
+            seats.forEach(seat => {
+                const seatnum = seat.textContent.trim();
+                const reservation = seatData.find(res => res.seatnum === seatnum);
+                if (reservation) {
+                    seat.className = 'col ' + reservation.status;
+                    if (reservation.status === "vacant") {
+                        vacantCount++;
+                    } else if (reservation.status === "reserved") {
+                        reservedCount++;
+                    }
+                } else {
+                    seat.className = 'col vacant';
+                    vacantCount++;
+                }
+            });
 
-        
+            // Update counts in the HTML
+            document.getElementById("number-vacant").textContent = vacantCount;
+            document.getElementById("number-reserved").textContent = reservedCount;
+        }
+
     } catch (error) {
         console.error('Error:', error);
     }
 }
+
 </script>
 

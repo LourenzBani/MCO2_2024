@@ -134,17 +134,17 @@ server.post('/main', async (req, res) => {
             // Redirect to the previous page
             res.redirect('/main');
         } else if (action === "reserve") {
+            console.log(req.body.selectedDateInput);
             // Generate reservation data\
             const labnum = '1';
             const seatnum = req.body.seatnum;
             const currentDate = new Date();
             const currentTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            const currentDateFormatted = currentDate.toISOString().slice(0, 10); // Format: YYYY-MM-DD
             const slotReservationTime = new Date(currentDate);
             slotReservationTime.setMinutes(currentDate.getMinutes() + 30); // Adding 30 minutes
             const timereserved = currentTime; // Use the current time
             const slotreserverd = req.body.slotreserverd;
-            const datereserved = currentDateFormatted; // Use the current date
+            const datereserved = req.body.selectedDateInput;
             const reservedby = req.body.name;
             const order = '1';
             const status = 'reserved';
@@ -195,12 +195,11 @@ server.post('/main2', async (req, res) => {
             const seatnum = req.body.seatnum;
             const currentDate = new Date();
             const currentTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            const currentDateFormatted = currentDate.toISOString().slice(0, 10); // Format: YYYY-MM-DD
             const slotReservationTime = new Date(currentDate);
             slotReservationTime.setMinutes(currentDate.getMinutes() + 30); // Adding 30 minutes
             const timereserved = currentTime; // Use the current time
             const slotreserverd = req.body.slotreserverd;
-            const datereserved = currentDateFormatted; // Use the current date
+            const datereserved = req.body.selectedDateInput;
             const reservedby = req.body.name;
             const order = '1';
             const status = 'reserved';
@@ -249,12 +248,11 @@ server.post('/main3', async (req, res) => {
             const seatnum = req.body.seatnum;
             const currentDate = new Date();
             const currentTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            const currentDateFormatted = currentDate.toISOString().slice(0, 10); // Format: YYYY-MM-DD
             const slotReservationTime = new Date(currentDate);
             slotReservationTime.setMinutes(currentDate.getMinutes() + 30); // Adding 30 minutes
             const timereserved = currentTime; // Use the current time
             const slotreserverd = req.body.slotreserverd;
-            const datereserved = currentDateFormatted; // Use the current date
+            const datereserved = req.body.selectedDateInput;
             const reservedby = req.body.name;
             const order = '1';
             const status = 'reserved';
@@ -303,12 +301,11 @@ server.post('/main4', async (req, res) => {
             const seatnum = req.body.seatnum;
             const currentDate = new Date();
             const currentTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            const currentDateFormatted = currentDate.toISOString().slice(0, 10); // Format: YYYY-MM-DD
             const slotReservationTime = new Date(currentDate);
             slotReservationTime.setMinutes(currentDate.getMinutes() + 30); // Adding 30 minutes
             const timereserved = currentTime; // Use the current time
             const slotreserverd = req.body.slotreserverd;
-            const datereserved = currentDateFormatted; // Use the current date
+            const datereserved = req.body.selectedDateInput;
             const reservedby = req.body.name;
             const order = '1';
             const status = 'reserved';
@@ -357,12 +354,11 @@ server.post('/main5', async (req, res) => {
             const seatnum = req.body.seatnum;
             const currentDate = new Date();
             const currentTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            const currentDateFormatted = currentDate.toISOString().slice(0, 10); // Format: YYYY-MM-DD
             const slotReservationTime = new Date(currentDate);
             slotReservationTime.setMinutes(currentDate.getMinutes() + 30); // Adding 30 minutes
             const timereserved = currentTime; // Use the current time
             const slotreserverd = req.body.slotreserverd;
-            const datereserved = currentDateFormatted; // Use the current date
+            const datereserved = req.body.selectedDateInput;
             const reservedby = req.body.name;
             const order = '1';
             const status = 'reserved';
@@ -394,6 +390,66 @@ server.post('/main5', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+server.post('/updateSeatDisplays', async function(req, resp) {
+    try {
+        const selectedTime = req.body.slotreserverd;
+        const selectedLab = req.body.labnum; // Retrieve selected lab number
+        const selectedDate = req.body.selectedDate; // Retrieve selected date
+        console.log(selectedTime);
+        console.log(selectedLab);
+        console.log(selectedDate); // Check if selected date is received
+
+        // Fetch reservations for the selected date, time, and lab
+        const reservations = await collection_reservation.find({ slotreserverd: selectedTime, labnum: selectedLab, datereserved: selectedDate }).lean();
+        console.log('Retrieved reservations:', reservations);
+
+        // Define an array to hold all seat numbers from 'A1' to 'I3'
+        const allSeatNumbers = [];
+        for (let letterCode = 65; letterCode <= 73; letterCode++) {
+            const letter = String.fromCharCode(letterCode);
+            for (let number = 1; number <= 3; number++) {
+                allSeatNumbers.push(letter + number);
+            }
+        }
+
+        console.log(allSeatNumbers);
+
+        // Update seatDisplays based on reservations for the selected date, time, and lab
+        await Promise.all(allSeatNumbers.map(async (seatnum) => {
+            // Check if there's a reservation for this seat at the selected date, time, and lab
+            const reservation = reservations.find(reservation => reservation.seatnum === seatnum);
+            
+            // Update seatDisplays based on the presence of reservation
+            if (reservation) {
+                // Seat is reserved
+                await seatDisplays.updateOne(
+                    { seatnum: seatnum },
+                    { $set: { status: "reserved", istaken: 1 } }
+                );
+            } else {
+                // Seat is vacant
+                await seatDisplays.updateOne(
+                    { seatnum: seatnum },
+                    { $set: { status: "vacant", istaken: 0 } }
+                );
+            }
+        }));
+
+        // Fetch updated reservations for rendering
+        const searchQuery = {};
+        const post_reservations = await seatDisplays.find(searchQuery).lean();
+
+        // Send JSON response with updated seat data
+        resp.json(post_reservations);
+
+    } catch (error) {
+        console.error('Error updating seat displays:', error);
+        resp.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
 
 
 // Main page (student view)
@@ -455,97 +511,7 @@ server.get('/main', async function(req, resp){
     }
 });
 
-server.post('/updateSeatDisplays', async function(req, resp) {
-    try {
-        const selectedTime = req.body.slotreserverd;
-        const selectedLab = req.body.labnum; // Retrieve selected lab number
-        console.log(selectedTime);
-        console.log(selectedLab); // Check if lab number is received
 
-        // Fetch reservations for the selected time and lab
-        const reservations = await collection_reservation.find({ slotreserverd: selectedTime, labnum: selectedLab }).lean();
-        console.log('Retrieved reservations:', reservations);
-
-        // Define an array to hold all seat numbers from 'A1' to 'I3'
-        const allSeatNumbers = [];
-        for (let letterCode = 65; letterCode <= 73; letterCode++) {
-            const letter = String.fromCharCode(letterCode);
-            for (let number = 1; number <= 3; number++) {
-                allSeatNumbers.push(letter + number);
-            }
-        }
-
-        console.log(allSeatNumbers);
-
-        // Update seatDisplays based on reservations for the selected time and lab
-        await Promise.all(allSeatNumbers.map(async (seatnum) => {
-            // Check if there's a reservation for this seat at the selected time and lab
-            const reservation = reservations.find(reservation => reservation.seatnum === seatnum);
-            
-            // Update seatDisplays based on the presence of reservation
-            if (reservation) {
-                // Seat is reserved
-                await seatDisplays.updateOne(
-                    { seatnum: seatnum },
-                    { $set: { status: "reserved", istaken: 1 } }
-                );
-            } else {
-                // Seat is vacant
-                await seatDisplays.updateOne(
-                    { seatnum: seatnum },
-                    { $set: { status: "vacant", istaken: 0 } }
-                );
-            }
-        }));
-
-        // Fetch updated reservations for rendering
-        const user = req.session.user;
-        const searchQuery = {};
-        const totalSeats = 27;
-        const result = await seatDisplays.aggregate([
-            { $match: { status: "reserved" } },
-            { $group: { _id: null, count: { $sum: 1 } } }
-        ]).exec();
-        const reservedCount = result.length > 0 ? result[0].count : 0;
-        const vacantCount = result.length > 0 ? totalSeats - result[0].count : totalSeats;
-        const currentDate = new Date().toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long', 
-            day: 'numeric' 
-        });
-        const timeSlots = [
-            "09:00 - 09:30 AM",
-            "09:30 - 10:00 AM",
-            "10:00 - 10:30 AM",
-            "10:30 - 11:00 AM",
-            "11:00 - 11:30 AM",
-            "11:30 - 12:00 PM",
-            "12:00 - 12:30 PM",
-            "12:30 - 01:00 PM",
-            "01:00 - 01:30 PM",
-            "01:30 - 02:00 PM"
-        ];
-        const post_reservations = await seatDisplays.find(searchQuery).lean();
-        const labs = await collection_lab.find(searchQuery).lean();
-
-       // Render the main page with counts and reservations
-        resp.render('mainpage', {
-            layout: 'main',
-            user: user,
-            reservation: post_reservations,
-            currentDate: currentDate,
-            labs: labs,
-            reservedCount: reservedCount,
-            vacantCount: vacantCount,
-            timeSlots: timeSlots
-        });
-
-    } catch (error) {
-        console.error('Error updating seat displays:', error);
-        resp.status(500).json({ error: 'Internal Server Error' });
-    }
-});
 
 
 

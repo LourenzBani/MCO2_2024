@@ -303,6 +303,8 @@ body{
     width: 100%;
 }
 
+
+
 .time-slot.selected {
     background-color: green;
 }
