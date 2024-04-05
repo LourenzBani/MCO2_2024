@@ -37,6 +37,40 @@
                 <img src="/common/images/dlsu-logo.png" id="dlsu-logo">
                 <div class="icon-padding"><h1 id="header-title">COMPUTER LAB RESERVATION</h1></div> 
             </div>
+            <div class="form-container">
+                    <form id="reservation-form" action="/main" method="POST" onsubmit="return submitForm()">
+                        <input type="hidden" name="action" value="reserve">
+
+
+                        <label for="slotreserverd">Select a Time:</label>
+                        <select id="slotreserverd" name="slotreserverd" required>
+                            <option value="">Select a Time Slot</option>
+                            {{#each timeSlots}}
+                                <option value="{{this}}">{{this}}</option>
+                            {{/each}}
+                        </select>
+
+                        <label for="seat">Select a Seat:</label>
+                        <select id="seat" name="seat" required>
+                            <option value="">Select a Seat</option>
+                            {{#each reservation}}
+                            {{#if istaken}}
+                            {{else}}
+                            <option value="{{seatnum}}">{{seatnum}}</option>
+                            {{/if}}
+                            {{/each}}
+                        </select>
+
+                        <input type="hidden" id="selected-seat" name="seatnum">
+                        
+                        <p>Chosen Day:</p>
+                        <input type="date" id="selectedDateInput" name="selectedDateInput" value="">
+                            <br><br>
+
+                        <button type="submit" class="button">Reserve</button>
+                        
+                    </form>
+                </div>
             
             <div class="main-footer scroll">
                 {{#each reservation}}

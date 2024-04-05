@@ -202,7 +202,10 @@ server.post('/main2', async (req, res) => {
             // Redirect to the previous page
             res.redirect('/main');
         } else if (action === "reserve") {
-            // Generate reservation data\
+            // Retrieve user details from the session
+            const { _id, name } = req.session.user;
+
+            // Generate reservation data
             const labnum = '2';
             const seatnum = req.body.seatnum;
             const currentDate = new Date();
@@ -212,22 +215,22 @@ server.post('/main2', async (req, res) => {
             const timereserved = currentTime; // Use the current time
             const slotreserverd = req.body.slotreserverd;
             const datereserved = req.body.selectedDateInput;
-            const reservedby = req.body.name;
             const order = '1';
             const status = 'reserved';
             const istaken = 1;
-           
+
             // Create a new reservation document
             const newReservation = new collection_reservation({
-                    labnum,
-                    seatnum,
-                    timereserved,
-                    slotreserverd,
-                    datereserved,
-                    reservedby,
-                    order,
-                    status,
-                    istaken
+                labnum,
+                seatnum,
+                timereserved,
+                slotreserverd,
+                datereserved,
+                reservedby: name,
+                reservedbyid: _id,
+                order,
+                status,
+                istaken
             });
 
             // Save the reservation to the database
@@ -255,7 +258,10 @@ server.post('/main3', async (req, res) => {
             // Redirect to the previous page
             res.redirect('/main2');
         } else if (action === "reserve") {
-            // Generate reservation data\
+            // Retrieve user details from the session
+            const { _id, name } = req.session.user;
+
+            // Generate reservation data
             const labnum = '3';
             const seatnum = req.body.seatnum;
             const currentDate = new Date();
@@ -265,22 +271,22 @@ server.post('/main3', async (req, res) => {
             const timereserved = currentTime; // Use the current time
             const slotreserverd = req.body.slotreserverd;
             const datereserved = req.body.selectedDateInput;
-            const reservedby = req.body.name;
             const order = '1';
             const status = 'reserved';
             const istaken = 1;
-           
+
             // Create a new reservation document
             const newReservation = new collection_reservation({
-                    labnum,
-                    seatnum,
-                    timereserved,
-                    slotreserverd,
-                    datereserved,
-                    reservedby,
-                    order,
-                    status,
-                    istaken
+                labnum,
+                seatnum,
+                timereserved,
+                slotreserverd,
+                datereserved,
+                reservedby: name,
+                reservedbyid: _id,
+                order,
+                status,
+                istaken
             });
 
             // Save the reservation to the database
@@ -308,7 +314,10 @@ server.post('/main4', async (req, res) => {
             // Redirect to the previous page
             res.redirect('/main3');
         } else if (action === "reserve") {
-            // Generate reservation data\
+            // Retrieve user details from the session
+            const { _id, name } = req.session.user;
+
+            // Generate reservation data
             const labnum = '4';
             const seatnum = req.body.seatnum;
             const currentDate = new Date();
@@ -318,22 +327,22 @@ server.post('/main4', async (req, res) => {
             const timereserved = currentTime; // Use the current time
             const slotreserverd = req.body.slotreserverd;
             const datereserved = req.body.selectedDateInput;
-            const reservedby = req.body.name;
             const order = '1';
             const status = 'reserved';
             const istaken = 1;
-           
+
             // Create a new reservation document
             const newReservation = new collection_reservation({
-                    labnum,
-                    seatnum,
-                    timereserved,
-                    slotreserverd,
-                    datereserved,
-                    reservedby,
-                    order,
-                    status,
-                    istaken
+                labnum,
+                seatnum,
+                timereserved,
+                slotreserverd,
+                datereserved,
+                reservedby: name,
+                reservedbyid: _id,
+                order,
+                status,
+                istaken
             });
 
             // Save the reservation to the database
@@ -361,7 +370,10 @@ server.post('/main5', async (req, res) => {
             // Redirect to the previous page
             res.redirect('/main4');
         } else if (action === "reserve") {
-            // Generate reservation data\
+            // Retrieve user details from the session
+            const { _id, name } = req.session.user;
+
+            // Generate reservation data
             const labnum = '5';
             const seatnum = req.body.seatnum;
             const currentDate = new Date();
@@ -371,22 +383,22 @@ server.post('/main5', async (req, res) => {
             const timereserved = currentTime; // Use the current time
             const slotreserverd = req.body.slotreserverd;
             const datereserved = req.body.selectedDateInput;
-            const reservedby = req.body.name;
             const order = '1';
             const status = 'reserved';
             const istaken = 1;
-           
+
             // Create a new reservation document
             const newReservation = new collection_reservation({
-                    labnum,
-                    seatnum,
-                    timereserved,
-                    slotreserverd,
-                    datereserved,
-                    reservedby,
-                    order,
-                    status,
-                    istaken
+                labnum,
+                seatnum,
+                timereserved,
+                slotreserverd,
+                datereserved,
+                reservedby: name,
+                reservedbyid: _id,
+                order,
+                status,
+                istaken
             });
 
             // Save the reservation to the database
@@ -785,6 +797,7 @@ server.get('/admin', async function(req, resp){
     }
 
     const post_reservations = await collection_reservation.find(searchQuery).lean();
+    
     resp.render('techpage',{
         layout: 'main',
         user: user,
