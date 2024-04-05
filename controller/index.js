@@ -765,18 +765,9 @@ server.get('/main5', async function(req, resp){
 server.get('/admin', async function(req, resp){
     const searchQuery = {};
     const user = req.session.user;
-    const totalSeats = 27;
 
     try {
-        // Fetch reservation counts
-        const result = await collection_reservation.aggregate([
-            { $match: { status: "reserved" } }, // Filter documents where status is "reserved"
-            { $group: { _id: null, count: { $sum: 1 } } } // Count the filtered documents
-        ]).exec();
         
-        // Extract reserved count from the result
-        const reservedCount = result.length > 0 ? result[0].count : 0;
-        const vacantCount = result.length > 0 ? totalSeats - result[0].count : totalSeats;
 
         // Get current date
         const currentDate = new Date().toLocaleDateString('en-US', {
@@ -796,14 +787,25 @@ server.get('/admin', async function(req, resp){
         user: user,
         reservation: post_reservations,
         currentDate: currentDate,
-        reservedCount: reservedCount,
-        vacantCount: vacantCount
 
     });
 
     } catch (error) {
         console.error('Error rendering main page:', error);
         resp.status(500).send('Internal Server Error');
+    }
+});
+
+server.delete('/reservation/:id', async (req, res) => {
+    const reservationId = req.params.id;
+
+    try {
+        // Find the reservation by ID and delete it
+        await collection_reservation.findByIdAndDelete(reservationId);
+        res.status(204).send(); // Respond with 204 No Content on success
+    } catch (error) {
+        console.error('Error deleting reservation:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 

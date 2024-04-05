@@ -37,125 +37,7 @@
                 <img src="/common/images/dlsu-logo.png" id="dlsu-logo">
                 <div class="icon-padding"><h1 id="header-title">COMPUTER LAB RESERVATION</h1></div> 
             </div>
-            <div class="main-info">
-                <div class="current-info-date">
-                    <div>
-                        <h1>{{ currentDate }}</h1>
-                    </div>
-                    <div>
-                        <h2>Current Lab: Lab #1</h2>
-                    </div>
-                </div>
-
-                <div class="current-info-availability">
-                    <div class="availability" id="avail">
-                        <div class="icon-name-style status-icons" id="number">
-                            <img id="green-dot" src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Basic_green_dot.png"> <div class="icon-padding">{{ vacantCount }}</div>
-                        </div>
-                        Vacant
-                    </div>
-                    <div class="availability" id="reserved">
-                        <div class="icon-name-style status-icons" id="number">
-                            <img id="red-dot" src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Basic_red_dot.png"> <div class="icon-padding">{{ reservedCount }}</div>
-                        </div>
-                        Reserved
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="main-buttons">
-                <br>
-                <div class="dropdown" id="myDropdown">
-                    <button class="button dropbtn"><i class="fa-solid fa-computer"></i> Go to Lab</button>
-                    <div class="dropdown-content">
-                        <a href="techview.html">
-                            <p>Lab #1</p>
-                        </a>
-                        <a href="techview2.html">
-                            <p>Lab #2</p>
-                        </a>
-                        <a href="techview3.html">
-                            <p>Lab #3</p>
-                        </a>
-                    </div>
-                </div>
-    
-                <button id="calendarButton" class="button"><i class="fa-solid fa-calendar-days"></i> Go to Date</button>
-                <div id="calendarPopup" class="calendar-popup">
-                    <input type="date" id="selectedDate">
-                </div>
-                <button class="button"> <i class="fa-solid fa-chevron-left"></i> </button>
-                <button class="button"> <i class="fa-solid fa-chevron-right"></i> </button>
-            </div>
-
-            <div class="main-slots">
-                <div class="timeslot-container">
-                    <div class="time-slots">
-                        <h2 id="timeslot-title"> Time Slots </h2>
-                        <div class="time-slots verti-scroll">
-                            <div class="time-sec">
-                                <div class="time-slot">
-                                    <label>9:00 - 9:30 AM</label>
-                                </div>
-                                <div class="time-slot">
-                                    <label>09:30 - 10:00 AM</label>
-                                </div>
-                            </div>
-                            <div class="time-sec">
-                                <div class="time-slot">
-                                    <label>10:00 - 10:30 AM</label>
-                                </div>
-                                <div class="time-slot">
-                                    <label>10:30 - 11:00 AM</label>
-                                </div>
-                            </div>
-                            <div class="time-sec">
-                                <div class="time-slot">
-                                    <label>11:00 - 11:30 AM</label>
-                                </div>
-                                <div class="time-slot">
-                                    <label>11:30 - 12:00 PM</label>
-                                </div>
-                            </div>
-                            <div class="time-sec">
-                                <div class="time-slot">
-                                    <label>12:00 - 12:30 PM</label>
-                                </div>
-                                <div class="time-slot">
-                                    <label>12:30 - 01:00 PM</label>
-                                </div>
-                            </div>
-                            <div class="time-sec">
-                                <div class="time-slot">
-                                    <label>01:00 - 01:30 PM</label>
-                                </div>
-                                <div class="time-slot">
-                                    <label>01:30 - 02:00 PM</label>
-                                </div>
-                            </div>
-                        
-                        </div>
-                        
-                    </div>
-                    
-                    <br>
-                    
-                </div>
-
-                <div class="seats">
-                    <div class="table-container">
-                        <div class="row">
-                            <div class="colheader colspan-100"><b>Seats</b></div>
-                        </div>
-                        <div class="row">
-                            {{#each reservation}}
-                            <div class="col {{status}}">{{seatnum}}</div>
-                            {{/each}}
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
             <div class="main-footer scroll">
                 {{#each reservation}}
                 {{#if istaken}}
@@ -167,10 +49,14 @@
                     </div>
                     <div class="card-info">
                         <div class="info-name">Time:</div> 
-                        <div class="info-deet">{{slotreserved}}</div> 
+                        <div class="info-deet">{{slotreserverd}}</div> 
                     </div>
                     <div class="card-info">
-                        <div class="info-name">Seat No.:</div> 
+                        <div class="info-name">Lab No:</div> 
+                        <div class="info-deet">{{labnum}}</div> 
+                    </div>
+                    <div class="card-info">
+                        <div class="info-name">Seat No:</div> 
                         <div class="info-deet">{{seatnum}}</div> 
                     </div>
                     <div class="card-info">
@@ -178,8 +64,9 @@
                         <div class="info-deet">{{datereserved}}</div> 
                     </div>
                     <div class="card-buttons">
-                        <button class="card-btn edit"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
-                        <button class="card-btn cancel"><i class="fa-solid fa-xmark"></i> Cancel</button>
+                        <button class="card-btn cancel" onclick="deleteReservation('{{ _id }}')">
+                            <i class="fa-solid fa-xmark"></i> Cancel
+                        </button>
                     </div>
                 </div>
                 {{/if}}
@@ -193,7 +80,31 @@
         </div>
     </div>
 
-    <script>
+    <script>    
+
+        function deleteReservation(reservationId) {
+        fetch(`/reservation/${reservationId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                // Remove the reservation card from the UI
+                const reservationCard = document.getElementById(`reservation-${reservationId}`);
+                if (reservationCard) {
+                    reservationCard.remove();
+                }
+                location.reload();
+            } else {
+                console.error('Error deleting reservation:', response.statusText);
+            }
+        })
+        .catch(error => console.error('Error deleting reservation:', error));
+    }
+
+
 
         let dropdown = document.getElementById('myDropdown');
         let dropdownContent = dropdown.querySelector('.dropdown-content');
