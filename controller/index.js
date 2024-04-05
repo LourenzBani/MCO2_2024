@@ -21,15 +21,24 @@ server.use(express.static('public'));
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
 
-// Database connection
-const connect = mongoose.connect("mongodb://localhost:27017/MCO2");
 
-connect.then(() => {
-    console.log("Database connected successfully");
-})
-.catch(() => {
-    console.log("Database cannot be connected");
-});
+
+const uri = "mongodb+srv://admin:12345@appdevmco3.dahyyoq.mongodb.net/?retryWrites=true&w=majority&appName=APPDEVMCO3";
+
+mongoose.connect(uri)
+  .then(() => {
+    console.log("Connected to MongoDB Atlas");
+    // You can start defining your Mongoose models and performing database operations here
+  })
+  .catch((error) => {
+    console.error("Error connecting to MongoDB Atlas:", error);
+  });
+
+
+function errorFn(err) {
+    console.log('Error found. Please trace!');
+    console.error(err);
+}
 
 function errorFn(err) {
     console.log('Error found. Please trace!');
