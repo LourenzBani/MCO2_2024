@@ -657,10 +657,12 @@ body{
 
 .data-elem {
     display: flex;
+    flex-direction: row;
     width: 20%;
 }
 
 .reserved-seat {
     display: flex;
+    flex-direction: row;
     width: auto;
 }
