@@ -34,43 +34,32 @@
     <div class="reservations">
         <h3>Reservations Data</h3>
             <div class="reservation-data">
-                <div class="reservation">
-                    <div class="data">
-                        <div class="data-row">
-                                <div class="data-elem">
-                                    Seat No. 
-                                </div>
-                                <div class="data-elem">
-                                    Lab No. 
-                                </div>
-                                <div class="data-elem">
-                                    Date 
-                                </div>
-                                <div class="data-elem">
-                                    Reserved Slot 
-                                </div>
-                                <div class="data-elem">
-                                    Reserved
-                                </div>
-                        </div>
-                        {{#each reservations}}
-                        <div class="data-row">
-                            <div class="reserved-seat">
-                                {{this.seatnum}}
-                            </div> 
-                            <div class="reserved-seat">
-                                {{this.labnum}}
-                            </div>
-                            <div class="reserved-seat">
-                                {{this.datereserved}}
-                            </div>
-                            <div class="reserved-seat">
-                                {{this.slotreserverd}}
-                            </div>
-                        </div>
-                        {{/each}}
-                    </div>
-            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Seat No</th>
+                        <th> | </th>
+                        <th>Lab No</th>
+                        <th> | </th>
+                        <th>Date Reserved</th>
+                        <th> | </th>
+                        <th>Slot Reserved</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each reservations}}
+                    <tr>
+                        <td>{{this.seatnum}}</td>
+                        <td> | </td>
+                        <td>{{this.labnum}}</td>
+                        <td> | </td>
+                        <td>{{this.datereserved}}</td>
+                        <td> | </td>
+                        <td>{{this.slotreserved}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
