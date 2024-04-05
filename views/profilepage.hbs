@@ -36,9 +36,39 @@
             <div class="reservation-data">
                 <div class="reservation">
                     <div class="data">
-                        <p>SeatNo LabNo Date Reserved Slot Reserved</p>
+                        <div class="data-row">
+                                <div class="data-elem">
+                                    Seat No. 
+                                </div>
+                                <div class="data-elem">
+                                    Lab No. 
+                                </div>
+                                <div class="data-elem">'
+                                    Date 
+                                </div>
+                                <div class="data-elem">
+                                    Reserved Slot 
+                                </div>
+                                <div class="data-elem">
+                                    Reserved
+                                </div>
+                                
+                        </div>
                         {{#each reservations}}
-                        <p class="reserved-seat">{{this.seatnum}} {{this.labnum}} {{this.datereserved}} {{this.slotreserverd}}</p>
+                        <div class="data-row">
+                            <div class="reserved-seat">
+                                {{this.seatnum}}
+                            </div> 
+                            <div class="reserved-seat">
+                                {{this.labnum}}
+                            </div>
+                            <div class="reserved-seat">
+                                {{this.datereserved}}
+                            </div>
+                            <div class="reserved-seat">
+                                {{this.slotreserverd}}
+                            </div>
+                        </div>
                         {{/each}}
                     </div>
                 </div>

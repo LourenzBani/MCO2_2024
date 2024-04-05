@@ -644,3 +644,23 @@ body{
     display: flex;
     flex-direction: row;
 }
+
+.data {
+    display: flex;
+    flex-direction: column;
+}  
+
+.data-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.data-elem {
+    display: flex;
+    width: auto;
+}
+
+.reserved-seat {
+    display: flex;
+    width: auto;
+}
