@@ -164,7 +164,7 @@
                         
                         <div class="row">
                             {{#each reservation}}
-                            <div class="col {{status}}">{{seatnum}}</div>
+                            <div class="col {{status}}" data-reservedby="{{reservedby}}" name="seatnum">{{seatnum}}</div>
                             {{/each}}
                         </div>
 
@@ -234,6 +234,28 @@
     </div>
 
 <script>
+
+        // JavaScript to show reservedby data on hover
+document.addEventListener('DOMContentLoaded', function() {
+    const seats = document.querySelectorAll('.seats .col');
+
+    seats.forEach(seat => {
+        seat.addEventListener('mouseover', function() {
+            const reservedBy = seat.getAttribute('data-reservedby');
+            if (reservedBy) {
+                // Set reservedBy value as title attribute (tooltip)
+                seat.setAttribute('title', reservedBy);
+            }
+        });
+
+        seat.addEventListener('mouseout', function() {
+            // Remove title attribute when mouse leaves the seat
+            seat.removeAttribute('title');
+        });
+    });
+});
+
+
     // Get the current date
     const currentDate = new Date();
 
@@ -319,11 +341,13 @@
                 const reservation = seatData.find(res => res.seatnum === seatnum);
                 if (reservation) {
                     seat.className = 'col ' + reservation.status;
+                    seat.setAttribute('data-reservedby', reservation.reservedby);
                     if (reservation.status === "vacant") {
                         vacantCount++;
                     } else if (reservation.status === "reserved") {
-                        reservedCount++;
+                        reservedCount++;        
                     }
+                
                 } else {
                     seat.className = 'col vacant';
                     vacantCount++;

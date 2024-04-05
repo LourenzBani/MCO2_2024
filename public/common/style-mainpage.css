@@ -1,6 +1,35 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+   
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px; 
+}
+
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
 *{
     margin: 0;
     padding: 0;
@@ -301,27 +330,12 @@ body{
     color: black;
     border-radius: 5px;
     width: 100%;
-    transition-duration: 0.4s;
 }
 
-.time-slot:hover {
-    background-color: #FFEA00; /* Green */
-    color: white;
-}
 
 
 .time-slot.selected {
     background-color: green;
-}
-
-#selectedDateInput {
-    width: max-content;
-    font-size: 18px;
-    border: 1px solid gray;
-    border-radius: 5px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    padding: 5px;
 }
 
 .green {
@@ -414,6 +428,8 @@ body{
     opacity: 0.6;
     transition: 0.3s;
 }
+
+
 
 
 .colspan-100 {
@@ -535,27 +551,6 @@ body{
     color: white;
 }
 
-#currentTime {
-    background-color: white;
-    padding: 10px 24px;
-    border-radius: 4px;
-    border: 2px solid #04AA6D;
-}
-
-
-#myDropdown {
-    background-color: white;
-    padding: 10px 24px;
-    border-radius: 4px;
-    border: 2px solid #04AA6D;
-    transition-duration: 0.4s;
-}
-
-#selectedDate {
-    border: 0px solid white;
-}
-
-
 .left-guidelines, .right-guidelines{
     width: 30%;
     padding: 20px;
@@ -597,17 +592,12 @@ body{
     background-color: #45a049;
 }
 
-#reservebutton {
-    text-align: center;
-    justify-content: center;
-}
-
 .dropdown-content a{
     text-decoration: none;
     color: rgb(0, 0, 0);
 }
 
-.formextra{
+.form{
     display: flex;
 }
 

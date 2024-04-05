@@ -439,13 +439,13 @@ server.post('/updateSeatDisplays', async function(req, resp) {
                 // Seat is reserved
                 await seatDisplays.updateOne(
                     { seatnum: seatnum },
-                    { $set: { status: "reserved", istaken: 1 } }
+                    { $set: {reservedby: reservation.reservedby,status: "reserved", istaken: 1 } }
                 );
             } else {
                 // Seat is vacant
                 await seatDisplays.updateOne(
                     { seatnum: seatnum },
-                    { $set: { status: "vacant", istaken: 0 } }
+                    { $set: {reservedby:"vacant",status: "vacant", istaken: 0 } }
                 );
             }
         }));
