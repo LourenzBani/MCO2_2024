@@ -82,18 +82,20 @@ body{
     justify-content: space-between;
 }
 
-.container .right-panel .info-data .data,
-.container .right-panel .reservation-data .data{
+.container .right-panel .info-data .data{
     width: 45%;
 }
 
+.container .right-panel .reservation-data .data{
+    width: 100%;
+}
 
 
 .container .right-panel .info-data .data p,
 .container .right-panel .reservation-data .data p{
     font-size: 13px;
     margin-bottom: 10px;
-    color: #919aa3;
+    color: #000000;
 }
 
 .container .right-panel .info-data .data input{

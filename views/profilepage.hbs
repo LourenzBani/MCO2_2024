@@ -31,26 +31,15 @@
         <div class="reservations">
             <h3 class="title-info">Reservations Data</h3>
             <div class="reservation-data">
-                <div class="data">
-                    <h4>Reserved Seat</h4>
-                    <p id="reserved-seat">{{seat.seat_number}}</p>
-                    <h4>Reserved Lab</h4>
-                    <p id="reserved-lab">lab</p>
-                </div>
-                <div class="data">
-                    <h4>Reserved day</h4>
-                    <p id="reserved-date">{{seat.day_reserved}}</p>
-                    <h4>Reserved Time</h4>
-                    <p id="reserved-time">{{seat.time_slot_from}} - {{seat.time_slot_to}}</p>
+                <div class="reservation">
+                    <div class="data">
+                        <p>SeatNo LabNo Date Reserved Slot Reserved</p>
+                        {{#each reservations}}
+                        <p class="reserved-seat">{{this.seatnum}} {{this.labnum}} {{this.datereserved}} {{this.slotreserverd}}</p>
+                        {{/each}}
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="social-media">
-            <ul>
-            <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-            <li><a href="#"><i class="fa-brands fa-x-twitter"></i></a></li>
-            <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-            </ul>
         </div>
     </div>
 </div>

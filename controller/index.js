@@ -45,6 +45,8 @@ function errorFn(err) {
     console.error(err);
 }
 
+
+
 Handler.registerHelper('add', function (num1, num2) {
     return num1 + num2;
 });
@@ -143,8 +145,10 @@ server.post('/main', async (req, res) => {
             // Redirect to the previous page
             res.redirect('/main');
         } else if (action === "reserve") {
-            console.log(req.body.selectedDateInput);
-            // Generate reservation data\
+            // Retrieve user details from the session
+            const { _id, name } = req.session.user;
+
+            // Generate reservation data
             const labnum = '1';
             const seatnum = req.body.seatnum;
             const currentDate = new Date();
@@ -154,22 +158,22 @@ server.post('/main', async (req, res) => {
             const timereserved = currentTime; // Use the current time
             const slotreserverd = req.body.slotreserverd;
             const datereserved = req.body.selectedDateInput;
-            const reservedby = req.body.name;
             const order = '1';
             const status = 'reserved';
             const istaken = 1;
-           
+
             // Create a new reservation document
             const newReservation = new collection_reservation({
-                    labnum,
-                    seatnum,
-                    timereserved,
-                    slotreserverd,
-                    datereserved,
-                    reservedby,
-                    order,
-                    status,
-                    istaken
+                labnum,
+                seatnum,
+                timereserved,
+                slotreserverd,
+                datereserved,
+                reservedby: name,
+                reservedbyid: _id,
+                order,
+                status,
+                istaken
             });
 
             // Save the reservation to the database
@@ -185,6 +189,7 @@ server.post('/main', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
 
 
 
@@ -810,13 +815,33 @@ server.delete('/reservation/:id', async (req, res) => {
 });
 
 // profile page 
-server.get('/profile', function(req, resp){
-    const user = req.session.user;
-    resp.render('profilepage',{
-        layout: 'profile',
-        user: user
+server.get('/profile', async (req, res) => {
+    try {
+        // Retrieve the user's _id from the session
+        const userId = req.session.user._id;
 
-    });
+        // Find the reservations associated with the user's _id
+        const userReservations = await collection_reservation.find({ reservedbyid: userId });
+
+        // Extract only the necessary reservation data
+        const formattedReservations = userReservations.map(reservation => ({
+            labnum: reservation.labnum,
+            seatnum: reservation.seatnum,
+            timereserved: reservation.timereserved,
+            slotreserverd: reservation.slotreserverd,
+            datereserved: reservation.datereserved
+        }));
+
+        // Render the profile page with user data and formatted reservations
+        res.render('profilepage', { 
+            layout: 'profile', 
+            user: req.session.user, 
+            reservations: formattedReservations 
+        });
+    } catch (error) {
+        console.error('Error retrieving user reservations:', error);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 // profile edit page 

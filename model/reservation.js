@@ -25,6 +25,10 @@ const reserveSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    reservedbyid: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
+    },
     order:  {
         type: Number,
         required: true
