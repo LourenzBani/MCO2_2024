@@ -657,7 +657,7 @@ body{
 
 .data-elem {
     display: flex;
-    width: auto;
+    width: 20%;
 }
 
 .reserved-seat {
