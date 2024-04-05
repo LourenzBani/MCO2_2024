@@ -78,17 +78,17 @@
 
             <div class="main-buttons">
                 <br>
-                <div class="dropdown" id="myDropdown">
-                    <button class="button dropbtn"><i class="fa-solid fa-computer"></i> Go to Lab</button>
+                <div class="dropdown" id="mDropdown">
+                    <button class="button dropbtn"><i class="fa-solid fa-computer"></i></button>
                 
                 </div>
     
                 
-                <form action="/main4" method="post">
+                <form action="/main" method="post">
                 <input type="hidden" name="action" value="prevPage">
                 <button class="button" action="prevPage"><i class="fa-solid fa-chevron-left"></i> </button>
                 </form>
-                 <form action="/main4" method="post">
+                 <form action="/main" method="post">
                 <input type="hidden" name="action" value="nextPage">
                 <button class="button" action="nextPage"><i class="fa-solid fa-chevron-right"></i> </button>
                 </form>
@@ -100,7 +100,7 @@
                     </select>
                 </div>
 
-                <div>
+                <div id="currentTime">
                     <label for="selectedTime">Selected Time Slot:</label>
                     <span id="selectedTimeDisplay"></span>
                 </div>
@@ -207,9 +207,13 @@
                         </select>
 
                         <input type="hidden" id="selected-seat" name="seatnum">
+                        
+                        <p>Chosen Day:</p>
                         <input type="date" id="selectedDateInput" name="selectedDateInput" value="">
-            
+                            <br><br>
+
                         <button type="submit" class="button">Reserve</button>
+                        
                     </form>
                 </div>
                 <div class="right-guidelines">
